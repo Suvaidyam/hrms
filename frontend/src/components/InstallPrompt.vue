@@ -2,7 +2,7 @@
 	<!-- Install PWA dialog -->
 	<Dialog v-model="showDialog">
 		<template #body-title>
-			<h2 class="text-lg font-bold">Install Suvaidyam</h2>
+			<h2 class="text-lg font-bold">Install HRMS</h2>
 		</template>
 		<template #body-content>
 			<p>Get the app on your device for easy access & a better experience!</p>
@@ -23,7 +23,7 @@
 			<div class="mt-[calc(100vh-15rem)] flex flex-col gap-3 mx-2 rounded py-5 bg-blue-100 drop-shadow-xl">
 				<div class="flex flex-row text-center items-center justify-between mb-1 px-3">
 					<span class="text-base text-gray-900 font-bold">
-						Install Suvaidyam
+						Install HRMS
 					</span>
 					<span class="inline-flex items-baseline">
 						<FeatherIcon name="x" class="ml-auto h-4 w-4 text-gray-700" @click="iosInstallMessage = false" />
