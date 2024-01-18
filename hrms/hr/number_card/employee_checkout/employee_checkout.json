@@ -1,0 +1,23 @@
+{
+ "color": "#CB2929",
+ "creation": "2024-01-18 11:04:48.152376",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "filters_json": "{}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Employee CheckOut",
+ "modified": "2024-01-18 11:08:22.990394",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee CheckOut",
+ "owner": "Administrator",
+ "report_field": "CheckOut",
+ "report_function": "Sum",
+ "report_name": "Employee CheckOut",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}
