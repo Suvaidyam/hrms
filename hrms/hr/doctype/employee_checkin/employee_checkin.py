@@ -70,7 +70,7 @@ class EmployeeCheckin(Document):
 			att.submit()
 	def before_save(self):
 		location = geocoder.ip('me')
-		self.device_id = f"({location.latlng[0]}, {location.latlng[1]})"
+		self.device_id = f"({location.latlng[0]}, {location.latlng[1]})" 
 @frappe.whitelist()
 def add_log_based_on_employee_field(
 	employee_field_value,
