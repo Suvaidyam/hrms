@@ -109,7 +109,7 @@
   }
  ],
  "links": [],
- "modified": "2023-05-12 14:52:22.660264",
+ "modified": "2024-02-06 13:55:43.747423",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Checkin",
@@ -201,7 +201,8 @@
   {
    "permlevel": 1,
    "read": 1,
-   "role": "Employee"
+   "role": "Employee",
+   "write": 1
   }
  ],
  "sort_field": "modified",

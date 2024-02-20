@@ -2,7 +2,10 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Employee Checkin', {
-	// setup: (frm) => {
-
-	// }
+	// async refresh(frm) {
+	// 	console.log('=======================', frm);
+	// },
+	// log_type: function (frm) {
+	// 	console.log('=========================================================', frm);
+	// },
 });
