@@ -64,13 +64,22 @@ class EmployeeCheckin(Document):
 	def after_insert(self):
 		if self.log_type == 'IN':
 			att = frappe.new_doc('Attendance')
-			
+			if self.time.time() >= datetime.strptime('09:15:00', '%H:%M:%S').time():
+				att.late_entry = 1
+			else:
+				att.late_entry = 0
+			if self.time.time() >= datetime.strptime('19:00:00', '%H:%M:%S').time():
+				att.early_exit = 1
+			else:
+				att.early_exit = 0
+			location = geocoder.ip('me')
 			att.attendance_date = frappe.utils.today()
+			att.location = f"{location.latlng[0]}, {location.latlng[1]}"
 			att.save()
 			att.submit()
 	def before_save(self):
 		location = geocoder.ip('me')
-		self.device_id = f"({location.latlng[0]}, {location.latlng[1]})" 
+		self.device_id = f"{location.latlng[0]}, {location.latlng[1]}" 
 @frappe.whitelist()
 def add_log_based_on_employee_field(
 	employee_field_value,
