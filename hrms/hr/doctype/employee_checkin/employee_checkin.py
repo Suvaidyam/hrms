@@ -62,16 +62,13 @@ class EmployeeCheckin(Document):
 		else:
 			self.shift = None
 	def after_insert(self):
-		if (self.log_type == 'IN' and self.time is not None):
+		if self.log_type == 'IN':
 			att = frappe.new_doc('Attendance')
-			if self.time.time() >= datetime.strptime('09:15:00', '%H:%M:%S').time():
+			
+			if datetime.strptime(str(self.time), '%Y-%m-%d %H:%M:%S.%f').time() >= datetime.strptime('09:15:00', '%H:%M:%S').time():
 				att.late_entry = 1
 			else:
 				att.late_entry = 0
-			if self.time.time() >= datetime.strptime('19:00:00', '%H:%M:%S').time():
-				att.early_exit = 1
-			else:
-				att.early_exit = 0
 			location = geocoder.ip('me')
 			att.attendance_date = frappe.utils.today()
 			att.location = f"{location.latlng[0]}, {location.latlng[1]}"
