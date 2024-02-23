@@ -10,6 +10,23 @@ frappe.listview_settings["Attendance"] = {
 			return [__(doc.status), "orange", "status,=," + doc.status];
 		}
 	},
+	button: {
+		show(doc) {
+			return doc.location;
+		},
+		get_label() {
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+						<path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+					</svg>`;
+		},
+		get_description(doc) {
+			return __('Location {0}', [`${doc.location}`])
+		},
+		action(doc) {
+			let mapsUrl = "https://www.google.com/maps?q=" + doc.location;
+			window.open(mapsUrl, "_blank");
+		}
+	},
 
 	onload: function (list_view) {
 		let me = this;
@@ -146,8 +163,8 @@ frappe.listview_settings["Attendance"] = {
 		fields.exclude_holidays.value = false;
 
 		fields.to_date.datepicker.update({
-            maxDate: moment().subtract(1, 'days').toDate()
-        });
+			maxDate: moment().subtract(1, 'days').toDate()
+		});
 
 		this.get_unmarked_days(dialog)
 	},

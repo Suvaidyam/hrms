@@ -206,14 +206,16 @@
   {
    "fieldname": "location",
    "fieldtype": "Data",
-   "label": "Location"
+   "hidden": 1,
+   "label": "Location",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-21 11:23:15.707105",
+ "modified": "2024-02-23 17:29:01.487796",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
