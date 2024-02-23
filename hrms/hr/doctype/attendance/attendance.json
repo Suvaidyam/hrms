@@ -206,7 +206,6 @@
   {
    "fieldname": "location",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Location",
    "read_only": 1
   }
@@ -215,7 +214,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-23 17:29:01.487796",
+ "modified": "2024-02-23 17:47:09.631566",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
