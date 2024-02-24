@@ -14,7 +14,7 @@
  "hide_custom": 0,
  "icon": "money-coins-1",
  "idx": 0,
- "is_hidden": 1,
+ "is_hidden": 0,
  "label": "Payroll",
  "links": [
   {
@@ -64,7 +64,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-02-21 11:00:01.392060",
+ "modified": "2024-02-24 09:52:44.744587",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll",
