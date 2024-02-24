@@ -69,9 +69,8 @@ class EmployeeCheckin(Document):
 				att.late_entry = 1
 			else:
 				att.late_entry = 0
-			location = geocoder.ip('me')
 			att.attendance_date = frappe.utils.today()
-			att.location = f"{location.latlng[0]}, {location.latlng[1]}"
+			att.location = self.device_id
 			att.save()
 			att.submit()
 			return
@@ -79,7 +78,7 @@ class EmployeeCheckin(Document):
 			return
 	def before_save(self):
 		location = geocoder.ip('me')
-		self.device_id = f"{location.latlng[0]}, {location.latlng[1]}" 
+		self.device_id = f"{location.latlng[0]}, {location.latlng[1]}"
 @frappe.whitelist()
 def add_log_based_on_employee_field(
 	employee_field_value,
@@ -253,7 +252,6 @@ def calculate_working_hours(logs, check_in_out_type, working_hours_calc_type):
 
 def time_diff_in_hours(start, end):
 	return round(float((end - start).total_seconds()) / 3600, 2)
-# print('=======================================================',time_diff_in_hours)
 
 def find_index_in_dict(dict_list, key, value):
 	return next((index for (index, d) in enumerate(dict_list) if d[key] == value), None)
