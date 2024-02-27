@@ -1,22 +1,11 @@
 <template>
 	<div v-if="showLabel" class="flex flex-row items-center gap-2">
-		<Avatar
-			v-if="employee"
-			:label="employee?.employee_name"
-			:image="employee?.image"
-			:size="props.size"
-		/>
+		<Avatar v-if="employee" :label="employee?.employee_name" :image="employee?.image" :size="props.size" />
 		<div class="text-base text-gray-800 grow">
 			{{ employee?.employee_name }}
 		</div>
 	</div>
-
-	<Avatar
-		v-else
-		:label="employee?.employee_name"
-		:image="employee?.image"
-		:size="props.size"
-	/>
+	<Avatar v-else :label="employee?.employee_name" :image="employee?.image" :size="props.size" />
 </template>
 
 <script setup>
