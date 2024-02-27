@@ -6,34 +6,20 @@
 		<div class="font-medium text-sm text-gray-500 mt-1.5" v-if="lastLog">
 			Last {{ lastLogType }} was at {{ lastLogTime }}
 		</div>
-		<Button
-			class="mt-4 mb-1 drop-shadow-sm py-5 text-base"
-			id="open-checkin-modal"
-			@click="checkinTimestamp = dayjs().format('YYYY-MM-DD HH:mm:ss')"
-		>
+		<Button class="mt-4 mb-1 drop-shadow-sm py-5 text-base" id="open-checkin-modal"
+			@click="checkinTimestamp = dayjs().format('YYYY-MM-DD HH:mm:ss')">
 			<template #prefix>
-				<FeatherIcon
-					:name="
-						nextAction.action === 'IN'
-							? 'arrow-right-circle'
-							: 'arrow-left-circle'
-					"
-					class="w-4"
-				/>
+				<FeatherIcon :name="nextAction.action === 'IN'
+					? 'arrow-right-circle'
+					: 'arrow-left-circle'
+					" class="w-4" />
 			</template>
 			{{ nextAction.label }}
 		</Button>
 	</div>
 
-	<ion-modal
-		ref="modal"
-		trigger="open-checkin-modal"
-		:initial-breakpoint="1"
-		:breakpoints="[0, 1]"
-	>
-		<div
-			class="h-40 w-full flex flex-col items-center justify-center gap-5 p-4 mb-5"
-		>
+	<ion-modal ref="modal" trigger="open-checkin-modal" :initial-breakpoint="1" :breakpoints="[0, 1]">
+		<div class="h-40 w-full flex flex-col items-center justify-center gap-5 p-4 mb-5">
 			<div class="flex flex-col gap-1.5 items-center justify-center">
 				<div class="font-bold text-xl">
 					{{ dayjs(checkinTimestamp).format("hh:mm:ss a") }}
@@ -42,11 +28,7 @@
 					{{ dayjs().format("D MMM, YYYY") }}
 				</div>
 			</div>
-			<Button
-				variant="solid"
-				class="w-full py-5 text-sm"
-				@click="submitLog(nextAction.action)"
-			>
+			<Button variant="solid" class="w-full py-5 text-sm" @click="submitLog(nextAction.action);">
 				Confirm {{ nextAction.label }}
 			</Button>
 		</div>
@@ -109,14 +91,24 @@ const lastLogTime = computed(() => {
 	return `${formattedTime} on ${dayjs(timestamp).format("D MMM, YYYY")}`
 })
 
-const submitLog = (logType) => {
-	const action = logType === "IN" ? "Check-in" : "Check-out"
-
+const submitLog = async (logType) => {
+	const action = logType === "IN" ? "Check-in" : "Check-out";
+	let geolocation;
+	if (navigator.geolocation) {
+		const position = await new Promise((resolve, reject) => {
+			navigator.geolocation.getCurrentPosition(resolve, reject);
+		});
+		geolocation = `${position.coords.latitude},${position.coords.longitude}`;
+	} else {
+		console.error("Geolocation is not supported by this browser or already retrieved.");
+		return null;
+	}
 	checkins.insert.submit(
 		{
 			employee: employee.data.name,
 			log_type: logType,
 			time: checkinTimestamp.value,
+			device_id: geolocation
 		},
 		{
 			onSuccess() {
