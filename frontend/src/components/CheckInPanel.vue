@@ -95,12 +95,19 @@ const submitLog = async (logType) => {
 	const action = logType === "IN" ? "Check-in" : "Check-out";
 	let geolocation;
 	if (navigator.geolocation) {
-		const position = await new Promise((resolve, reject) => {
-			navigator.geolocation.getCurrentPosition(resolve, reject);
-		});
-		geolocation = `${position.coords.latitude},${position.coords.longitude}`;
+		try {
+			const position = await new Promise((resolve, reject) => {
+				navigator.geolocation.getCurrentPosition(resolve, reject, {
+					enableHighAccuracy: true// Increase timeout to 10 seconds
+				});
+			});
+			geolocation = `${position.coords.latitude},${position.coords.longitude}`;
+		} catch (error) {
+			console.error("Error occurred while retrieving geolocation:", error);
+			return null;
+		}
 	} else {
-		console.error("Geolocation is not supported by this browser or already retrieved.");
+		console.error("Geolocation is not supported by this browser.");
 		return null;
 	}
 	checkins.insert.submit(
