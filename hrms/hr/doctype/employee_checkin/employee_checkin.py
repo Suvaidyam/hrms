@@ -72,7 +72,6 @@ class EmployeeCheckin(Document):
 			att.attendance_date = frappe.utils.today()
 			att.location = self.device_id
 			att.save()
-			att.submit()
 			return
 		else:
 			return
