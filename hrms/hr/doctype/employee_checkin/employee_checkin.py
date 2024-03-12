@@ -64,7 +64,6 @@ class EmployeeCheckin(Document):
 	def after_insert(self):
 		if self.log_type == 'IN':
 			att = frappe.new_doc('Attendance')
-			# if True:
 			if datetime.strptime(str(self.time), '%Y-%m-%d %H:%M:%S').time() >= datetime.strptime('09:15:00', '%H:%M:%S').time():
 				att.late_entry = 1
 			att.attendance_date = frappe.utils.today()
