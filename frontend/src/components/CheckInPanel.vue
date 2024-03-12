@@ -28,9 +28,15 @@
 					{{ dayjs().format("D MMM, YYYY") }}
 				</div>
 			</div>
-			<Button variant="solid" class="w-full py-5 text-sm" @click="submitLog(nextAction.action);">
-				Confirm {{ nextAction.label }}
-			</Button>
+                <Button
+                    :disabled=loader
+                    variant="solid"
+                    :class="{'bg-black': loader}"
+                    class="w-full py-5 text-sm relative" @click="submitLog(nextAction.action);"
+                    >
+                    Confirm {{ nextAction.label }}
+                    <LoadingIndicator  v-if="loader"  class="absolute top-3 left-[350px] h-4 w-4 "/>
+                </Button>
 		</div>
 	</ion-modal>
 </template>
@@ -39,13 +45,14 @@
 import { createListResource, toast, FeatherIcon } from "frappe-ui"
 import { computed, inject, ref, onMounted, onBeforeUnmount } from "vue"
 import { IonModal, modalController } from "@ionic/vue"
-
+import { LoadingIndicator } from "frappe-ui";
+import { defaults } from "autoprefixer";
 const DOCTYPE = "Employee Checkin"
-
 const socket = inject("$socket")
 const employee = inject("$employee")
 const dayjs = inject("$dayjs")
 const checkinTimestamp = ref(null)
+const loader = ref(false)
 
 const checkins = createListResource({
 	doctype: DOCTYPE,
@@ -72,7 +79,6 @@ const lastLog = computed(() => {
 const lastLogType = computed(() => {
 	return lastLog?.value?.log_type === "IN" ? "check-in" : "check-out"
 })
-
 const nextAction = computed(() => {
 	return lastLog?.value?.log_type === "IN"
 		? { action: "OUT", label: "Check Out" }
@@ -91,9 +97,12 @@ const lastLogTime = computed(() => {
 	return `${formattedTime} on ${dayjs(timestamp).format("D MMM, YYYY")}`
 })
 
+
 const submitLog = async (logType) => {
+	loader.value=true
 	const action = logType === "IN" ? "Check-in" : "Check-out";
 	let geolocation;
+	
 	if (navigator.geolocation) {
 		try {
 			const position = await new Promise((resolve, reject) => {
@@ -119,6 +128,7 @@ const submitLog = async (logType) => {
 		},
 		{
 			onSuccess() {
+				loader.value=false
 				modalController.dismiss()
 				toast({
 					title: "Success",
@@ -129,6 +139,7 @@ const submitLog = async (logType) => {
 				})
 			},
 			onError() {
+				loader.value=false
 				toast({
 					title: "Error",
 					text: `${action} failed!`,
@@ -154,4 +165,6 @@ onBeforeUnmount(() => {
 	socket.emit("doctype_unsubscribe", DOCTYPE)
 	socket.off("list_update")
 })
+
+
 </script>
