@@ -64,7 +64,8 @@ class EmployeeCheckin(Document):
 	def after_insert(self):
 		if self.log_type == 'IN':
 			att = frappe.new_doc('Attendance')
-			if datetime.strptime(str(self.time), '%Y-%m-%d %H:%M:%S').time() >= datetime.strptime('09:15:00', '%H:%M:%S').time():
+			# if datetime.strptime(str(self.time), '%Y-%m-%d %H:%M:%S').time() >= datetime.strptime('09:15:00', '%H:%M:%S').time():
+			if True:
 				att.late_entry = 1
 			att.attendance_date = frappe.utils.today()
 			att.location = self.device_id
@@ -72,9 +73,28 @@ class EmployeeCheckin(Document):
 			return
 		else:
 			return
-	def before_save(self):
-		location = geocoder.ip('me')
-		self.device_id = f"{location.latlng[0]}, {location.latlng[1]}"
+	# def before_save(self):
+	# 	location = geocoder.ip('me')
+	# 	if location is not None and location.latlng is not None:
+	# 		latitude = location.latlng[0]
+	# 		longitude = location.latlng[1]
+	# 	# print('========================',f"{location.latlng[0]}, {location.latlng[1]}")
+	# 	print('========================',latitude,longitude)
+	# 	# self.device_id = f"{location.latlng[0]}, {location.latlng[1]}"
+	
+def before_save(self):
+    location = geocoder.ip('me')
+    if location is not None and location.latlng is not None:
+        latitude = location.latlng[0]
+        longitude = location.latlng[1]
+        print('Latitude:', latitude)
+        print('Longitude:', longitude)
+        # Perform further operations with latitude and longitude
+    else:
+        print('Failed to fetch location information.')
+
+
+
 @frappe.whitelist()
 def add_log_based_on_employee_field(
 	employee_field_value,
