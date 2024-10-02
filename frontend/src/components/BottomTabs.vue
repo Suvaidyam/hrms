@@ -60,7 +60,7 @@ const tabItems = [
 	{
 		icon: TravelIcon,
 		title: "Travel",
-		route: "/dashboard/salary-slips",
+		route: "/dashboard/travel-claims",
 	},
 ]
 </script>
