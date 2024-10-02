@@ -1,8 +1,8 @@
 <template>
-	<BaseLayout pageTitle="Expense Claims">
+	<BaseLayout pageTitle="Travel Claims">
 		<template #body>
 			<div class="flex flex-col mt-7 mb-7 p-4 gap-7">
-				<ExpenseClaimSummary />
+				<TravelClaimSummary />
 
 				<div class="w-full">
 					<router-link
@@ -53,7 +53,8 @@
 import { markRaw } from "vue"
 
 import BaseLayout from "@/components/BaseLayout.vue"
-import ExpenseClaimSummary from "@/components/ExpenseClaimSummary.vue"
+// import ExpenseClaimSummary from "@/components/ExpenseClaimSummary.vue"
+import TravelClaimSummary from "../../components/TravelClaimSummary.vue"
 import RequestList from "@/components/RequestList.vue"
 import ExpenseClaimItem from "@/components/ExpenseClaimItem.vue"
 import EmployeeAdvanceBalance from "@/components/EmployeeAdvanceBalance.vue"
