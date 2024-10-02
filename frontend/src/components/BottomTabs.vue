@@ -30,6 +30,9 @@ import HomeIcon from "@/components/icons/HomeIcon.vue"
 import LeaveIcon from "@/components/icons/LeaveIcon.vue"
 import ExpenseIcon from "@/components/icons/ExpenseIcon.vue"
 import SalaryIcon from "@/components/icons/SalaryIcon.vue"
+import TravelIcon from "@/components/icons/Travelcon.vue"
+// import TravelIocn from "@components/icons/TravelIocn.vue"
+
 
 const route = useRoute()
 
@@ -52,6 +55,11 @@ const tabItems = [
 	{
 		icon: SalaryIcon,
 		title: "Salary",
+		route: "/dashboard/salary-slips",
+	},
+	{
+		icon: TravelIcon,
+		title: "Travel",
 		route: "/dashboard/salary-slips",
 	},
 ]
