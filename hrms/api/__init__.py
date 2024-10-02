@@ -410,6 +410,46 @@ def get_expense_claim_summary(employee: str) -> dict:
 
 	return summary
 
+@frappe.whitelist()
+def get_travel_claim_summary(employee: str) -> dict:
+	from frappe.query_builder.functions import Sum
+
+	Claim = frappe.qb.DocType("Travel Request")
+
+	pending_claims_case = (
+		frappe.qb.terms.Case().when(Claim.workflow_status == "Draft", Claim.costings.total_amount).else_(0)
+	)
+	sum_pending_claims = Sum(pending_claims_case).as_("total_pending_amount")
+
+	approved_claims_case = (
+		frappe.qb.terms.Case()
+		.when(Claim.workflow_status == "Approved", Claim.funded_amount)
+		.else_(0)
+	)
+	sum_approved_claims = Sum(approved_claims_case).as_("total_approved_amount")
+
+	rejected_claims_case = (
+		frappe.qb.terms.Case()
+		.when(Claim.workflow_status == "Rejected", Claim.sponsored_amount)
+		.else_(0)
+	)
+	sum_rejected_claims = Sum(rejected_claims_case).as_("total_rejected_amount")
+
+	summary = (
+		frappe.qb.from_(Claim)
+		.select(
+			sum_pending_claims,
+			sum_approved_claims,
+			sum_rejected_claims,
+			Claim.company,
+		)
+		.where((Claim.docstatus != 2) & (Claim.employee == employee))
+	).run(as_dict=True)[0]
+
+	currency = frappe.db.get_value("Company", summary.company, "default_currency")
+	summary["currency"] = currency
+
+	return summary
 
 @frappe.whitelist()
 def get_expense_type_description(expense_type: str) -> str:
