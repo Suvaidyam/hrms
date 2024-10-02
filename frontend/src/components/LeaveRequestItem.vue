@@ -21,7 +21,8 @@
 					variant="outline"
 					:theme="colorMap[status]"
 					:label="status"
-					size="md"
+					size="lg"
+					
 				/>
 				<FeatherIcon name="chevron-right" class="h-5 w-5 text-gray-500" />
 			</div>
