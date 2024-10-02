@@ -73,9 +73,9 @@ const props = defineProps({
 })
 
 const tabs = [
-	{ name: "Expenses", lastField: "taxes" },
-	{ name: "Advances", lastField: "advances" },
-	{ name: "Totals", lastField: "cost_center" },
+	{ name: "Travel Request", lastField: "taxes" },
+	// { name: "Advances", lastField: "advances" },
+	// { name: "Totals", lastField: "cost_center" },
 ]
 
 // object to store form data
@@ -92,6 +92,7 @@ const formFields = createResource({
 	params: { doctype: "Travel Request" },
 	transform(data) {
 		let fields = getFilteredFields(data)
+		console.log("t",fields)
 		return fields.map((field) => {
 			if (field.fieldname === "posting_date") field.default = today
 			return applyFilters(field)

@@ -6,7 +6,7 @@
 
 				<div class="w-full">
 					<router-link
-						:to="{ name: 'ExpenseClaimFormView' }"
+						:to="{ name: 'TravelClaimFormView' }"
 						v-slot="{ navigate }"
 					>
 						<Button
@@ -14,7 +14,7 @@
 							variant="solid"
 							class="w-full py-5 text-base"
 						>
-							Claim an Expense
+							Request a Travel 
 						</Button>
 					</router-link>
 				</div>
