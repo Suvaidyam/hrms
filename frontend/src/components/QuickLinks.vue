@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col gap-5 my-4 w-full">
-		<div class="text-lg font-medium text-gray-900">{{ title }}</div>
+		<div class="text-lg  font-medium text-gray-900">{{ title }}</div>
 		<div class="flex flex-col bg-white rounded">
 			<router-link
 				class="flex flex-row flex-start p-4 items-center justify-between border-b"
@@ -8,9 +8,9 @@
 				:key="link.title"
 				:to="{ name: link.route }"
 			>
-				<div class="flex flex-row items-center gap-3 grow">
-					<component :is="link.icon" class="h-5 w-5 text-gray-500" />
-					<div class="text-base font-normal text-gray-800">
+				<div class="flex flex-row items-center  gap-3 grow">
+					<component :is="link.icon" class="h-5 w-5 text-teal-600" />
+					<div class="text-base font-normal text-teal-600">
 						{{ link.title }}
 					</div>
 				</div>

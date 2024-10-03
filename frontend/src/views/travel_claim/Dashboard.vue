@@ -1,18 +1,18 @@
 <template>
 	<BaseLayout pageTitle="Travel Claims">
 		<template #body>
-			<div class="flex flex-col mt-7 mb-7 p-4 gap-7">
+			<div class="flex flex-col mt-7 mb-7 p-4 gap-7 ">
 				<TravelClaimSummary />
 
-				<div class="w-full">
+				<div class="w-full ">
 					<router-link
 						:to="{ name: 'TravelClaimFormView' }"
 						v-slot="{ navigate }"
 					>
 						<Button
 							@click="navigate"
-							variant="solid"
-							class="w-full py-5 text-base"
+							variant=""
+							class="w-full py-5 text-base bg-blue-900 text-white "
 						>
 							Request a Travel 
 						</Button>

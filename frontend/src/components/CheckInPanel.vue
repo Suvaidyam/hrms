@@ -1,13 +1,13 @@
 <template>
 	<div class="flex flex-col bg-white rounded w-full py-6 px-4 border-none">
-		<h2 class="text-lg font-bold text-gray-900">Hey, {{ employee?.data?.first_name }} 👋</h2>
+		<h2 class="text-lg font-bold text-teal-600">Hey, {{ employee?.data?.first_name }} 👋</h2>
 
 		<template v-if="settings.data?.allow_employee_checkin_from_mobile_app">
 			<div class="font-medium text-sm text-gray-500 mt-1.5" v-if="lastLog">
 				Last {{ lastLogType }} was at {{ lastLogTime }}
 			</div>
 			<Button
-				class="mt-4 mb-1 drop-shadow-sm py-5 text-base"
+				class="mt-4 mb-1 drop-shadow-sm py-5 text-base bg-blue-800 hover:bg-blue-900 text-white"
 				id="open-checkin-modal"
 				@click="handleEmployeeCheckin"
 			>
@@ -33,7 +33,7 @@
 		:initial-breakpoint="1"
 		:breakpoints="[0, 1]"
 	>
-		<div class="h-120 w-full flex flex-col items-center justify-center gap-5 p-4 mb-5">
+		<div class="h-120 w-full flex flex-col bg-white items-center justify-center gap-5 p-4 mb-5">
 			<div class="flex flex-col gap-1.5 mt-2 items-center justify-center">
 				<div class="font-bold text-xl">
 					{{ dayjs(checkinTimestamp).format("hh:mm:ss a") }}
@@ -63,7 +63,7 @@
 				</div>
 			</template>
 
-			<Button variant="solid" class="w-full py-5 text-sm" @click="submitLog(nextAction.action)">
+			<Button variant="" class="w-full py-5 text-sm bg-blue-800 text-white hover:bg-blue-900" @click="submitLog(nextAction.action)">
 				Confirm {{ nextAction.label }}
 			</Button>
 		</div>

@@ -10,6 +10,8 @@
 				:id="props.id"
 				:showAttachmentView="true"
 				@validateForm="validateForm"
+				
+			
 			/>
 		</ion-content>
 	</ion-page>

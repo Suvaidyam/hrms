@@ -2,10 +2,10 @@
 	<ion-page>
 		<ion-header class="ion-no-border">
 			<div class="w-full sm:w-96">
-				<div class="flex flex-col bg-white shadow-sm p-4">
+				<div class="flex flex-col bg-blue-900 text-white shadow-sm p-4">
 					<div class="flex flex-row justify-between items-center">
 						<div class="flex flex-row items-center gap-2">
-							<h2 class="text-xl font-bold text-gray-900">
+							<h2 class="text-xl font-bold text-white">
 								{{ props.pageTitle }}
 							</h2>
 						</div>
