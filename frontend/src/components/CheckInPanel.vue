@@ -7,14 +7,14 @@
 				Last {{ lastLogType }} was at {{ lastLogTime }}
 			</div>
 			<Button
-				class="mt-4 mb-1 drop-shadow-sm py-5 text-base bg-blue-800 hover:bg-blue-900 text-white"
+				class="mt-4 mb-1 drop-shadow-sm py-5 text-base !bg-blue-800 text-white !hover:bg-blue-900"
 				id="open-checkin-modal"
 				@click="handleEmployeeCheckin"
 			>
 				<template #prefix>
 					<FeatherIcon
 						:name="nextAction.action === 'IN' ? 'arrow-right-circle' : 'arrow-left-circle'"
-						class="w-4"
+						class="w-4 !text-white"
 					/>
 				</template>
 				{{ nextAction.label }}

@@ -29,3 +29,29 @@ body {
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 }
+header{
+	background: rgb(30 58 138) !important;
+	color: white !important;
+}
+header h2{
+	color: white !important;
+	margin-left: 10px !important;
+}
+header button{
+	background: white !important;
+	color: rgb(30 58 138) !important;
+}
+
+svg{
+	color: teal !important;
+}
+
+a div{
+	color: teal !important;
+}
+a{
+	color: teal !important;
+
+}
+
+	

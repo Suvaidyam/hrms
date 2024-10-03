@@ -205,7 +205,7 @@
 				/>
 
 				<Button
-					class="w-full bg-blue-800 hover:bg-blue-900 rounded py-5 text-base disabled:bg-blue-700 disabled:text-white"
+					class="w-full !bg-blue-800 !hover:bg-blue-900 rounded py-5 text-base disabled:bg-blue-700 disabled:text-white"
 					:class="formButton === 'Cancel' ? 'shadow' : ''"
 					@click="formButton === 'Save' ? saveForm() : submitOrCancelForm()"
 					:variant="formButton === 'Cancel' ? 'subtle' : 'solid'"
