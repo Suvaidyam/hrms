@@ -1,11 +1,10 @@
 <template>
 	<ion-page>
 		<ListView
-			doctype="Travel Request"
-			pageTitle="Travel Request History"
+			doctype="Expense Claim"
+			pageTitle="Travel History"
 			:tabButtons="TAB_BUTTONS"
-			:fields="EXPENSE_CLAIM_FIELDS"
-			groupBy="`tabTravel Request`.name"
+			:fields="TRAVEL_CLAIM_FIELDS"
 			:filterConfig="FILTER_CONFIG"
 		/>
 	</ion-page>
@@ -15,19 +14,19 @@
 import { IonPage } from "@ionic/vue"
 import ListView from "@/components/ListView.vue"
 
-const TAB_BUTTONS = ["My Travel Claims", "Team Travel Claims"]
-const EXPENSE_CLAIM_FIELDS = [
-	"`tabTravel Request`.name",
-	"`tabTravel Request`.employee",
-	"`tabTravel Request`.employee_name",
-	// "`tabTravel Request`.approval_status",
-	"`tabTravel Request`.status",
-	"`tabTravel Request`.expense_approver",
-	"`tabTravel Request`.total_claimed_amount",
-	// "`tabTravel Request`.posting_date",
-	"`tabTravel Request`.company",
-	"`tabTravel Request Detail`.travel_type",
-	"count(`tabTravel Request Detail`.travel_type) as total_expenses",
+const TAB_BUTTONS = ["My Claims", "Team Claims"]
+const TRAVEL_CLAIM_FIELDS = [
+	"`tabExpense Claim`.name",
+	"`tabExpense Claim`.employee",
+	"`tabExpense Claim`.employee_name",
+	"`tabExpense Claim`.approval_status",
+	"`tabExpense Claim`.status",
+	"`tabExpense Claim`.expense_approver",
+	"`tabExpense Claim`.total_claimed_amount",
+	"`tabExpense Claim`.posting_date",
+	"`tabExpense Claim`.company",
+	"`tabExpense Claim Detail`.expense_type",
+	"count(`tabExpense Claim Detail`.expense_type) as total_expenses",
 ]
 
 const FILTER_CONFIG = [

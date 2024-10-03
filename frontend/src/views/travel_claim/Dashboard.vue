@@ -25,7 +25,7 @@
 						:component="markRaw(TravelClaimItem)"
 						:items="myClaims.data"
 						:addListButton="true"
-						listButtonRoute="ExpenseClaimListView"
+						listButtonRoute="TravelClaimListView"
 					/>
 				</div>
 

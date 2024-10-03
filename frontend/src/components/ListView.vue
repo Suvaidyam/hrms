@@ -131,10 +131,9 @@ import ExpenseClaimItem from "@/components/ExpenseClaimItem.vue"
 import EmployeeAdvanceItem from "@/components/EmployeeAdvanceItem.vue"
 import ListFiltersActionSheet from "@/components/ListFiltersActionSheet.vue"
 import CustomIonModal from "@/components/CustomIonModal.vue"
-
+import TravelClaimItem from "@/components/TravelClaimItem.vue"
 import useWorkflow from "@/composables/workflow"
 import { useListUpdate } from "@/composables/realtime"
-import TravelClaimItem from "./TravelClaimItem.vue"
 
 const props = defineProps({
 	doctype: {
