@@ -6,7 +6,7 @@
 
 				<div class="w-full ">
 					<router-link
-						:to="{ name: 'ExpenseClaimFormView' }"
+						:to="{ name: 'TravelClaimFormView' }"
 						v-slot="{ navigate }"
 					>
 						<Button
@@ -14,7 +14,7 @@
 							variant=""
 							class="w-full py-5 text-base bg-blue-900 text-white "
 						>
-							Claim an Expense
+							Request a Travel 
 						</Button>
 					</router-link>
 				</div>
@@ -22,7 +22,7 @@
 				<div>
 					<div class="text-lg text-gray-800 font-bold ">Recent Expenses</div>
 					<RequestList
-						:component="markRaw(ExpenseClaimItem)"
+						:component="markRaw(TravelClaimItem)"
 						:items="myClaims.data"
 						:addListButton="true"
 						listButtonRoute="ExpenseClaimListView"
@@ -56,7 +56,8 @@ import BaseLayout from "@/components/BaseLayout.vue"
 // import ExpenseClaimSummary from "@/components/ExpenseClaimSummary.vue"
 import TravelClaimSummary from "../../components/TravelClaimSummary.vue"
 import RequestList from "@/components/RequestList.vue"
-import ExpenseClaimItem from "@/components/ExpenseClaimItem.vue"
+// import ExpenseClaimItem from "@/components/ExpenseClaimItem.vue"
+import TravelClaimItem from "../../components/TravelClaimItem.vue"
 import EmployeeAdvanceBalance from "@/components/EmployeeAdvanceBalance.vue"
 
 import { myClaims } from "@/data/claims"

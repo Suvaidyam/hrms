@@ -73,9 +73,9 @@ const props = defineProps({
 })
 
 const tabs = [
-	{ name: "Expenses", lastField: "taxes" },
-	{ name: "Advances", lastField: "advances" },
-	{ name: "Totals", lastField: "cost_center" },
+	{ name: "Travel Request", lastField:"other_details" },
+	{ name: "Travel Itinerary", lastField: "other_details" },
+	{ name: "Costing Details", lastField: "costings" },
 ]
 
 // object to store form data
@@ -92,12 +92,14 @@ const formFields = createResource({
 	params: { doctype: "Travel Request" },
 	transform(data) {
 		let fields = getFilteredFields(data)
+		console.log("t",fields)
 		return fields.map((field) => {
 			if (field.fieldname === "posting_date") field.default = today
 			return applyFilters(field)
 		})
 	},
 	onSuccess(_data) {
+		console.log("_data_data_data",_data);
 		expenseApproverDetails.reload()
 		companyDetails.reload()
 	},
@@ -105,34 +107,34 @@ const formFields = createResource({
 formFields.reload()
 
 // resources
-const advances = createResource({
-	url: "hrms.hr.doctype.expense_claim.expense_claim.get_advances",
+const itinerary = createResource({
+	url: "hrms.hr.doctype.expense_claim.travel_request.get_itinerary",
 	params: { employee: employee.data.name },
 	auto: true,
 	onSuccess(data) {
 		// set advances
 		if (props.id) {
-			expenseClaim.value.advances?.map((advance) => (advance.selected = true))
+			expenseClaim.value.advances?.map((itinerary) => (itinerary.selected = true))
 		} else {
 			expenseClaim.value.advances = []
 		}
 
-		return data.forEach((advance) => {
+		return data.forEach((itinerary) => {
 			if (
 				props.id &&
 				expenseClaim.value.advances?.some(
-					(entry) => entry.employee_advance === advance.name
+					(entry) => entry.employee_advance === itinerary.name
 				)
 			)
 				return
 
-			expenseClaim.value.advances?.push({
-				employee_advance: advance.name,
-				purpose: advance.purpose,
-				posting_date: advance.posting_date,
-				advance_account: advance.advance_account,
-				advance_paid: advance.paid_amount,
-				unclaimed_amount: advance.paid_amount - advance.claimed_amount,
+			expenseClaim.value.itinerary?.push({
+				employee_advance: itinerary.name,
+				purpose: itinerary.purpose,
+				posting_date: itinerary.posting_date,
+				advance_account: itinerary.advance_account,
+				advance_paid: itinerary.paid_amount,
+				unclaimed_amount: itinerary.paid_amount - itinerary.claimed_amount,
 				allocated_amount: 0,
 			})
 		})
