@@ -26,8 +26,8 @@
 						<ErrorMessage :message="errorMessage" />
 						<Button
 							:loading="session.login.loading"
-							variant="solid"
-							class="disabled:bg-gray-700 disabled:text-white !mt-6"
+							variant=""
+							class="disabled:bg-gray-700 disabled:text-white !mt-6 bg-blue-900 text-white"
 						>
 							Login
 						</Button>

@@ -4,14 +4,14 @@
 	>
 		<!-- Header -->
 		<div
-			class="w-full flex flex-row gap-2 pt-8 pb-5 border-b justify-center items-center sticky top-0 z-[100]"
+			class="w-full  flex flex-row gap-2 pt-8 pb-5 border-b justify-center items-center sticky top-0 z-[100]"
 		>
-			<span class="text-gray-900 font-bold text-lg text-center">
+			<span class="text-gray-900  font-bold text-lg text-center">
 				{{ title }}
 			</span>
 		</div>
 
-		<div class="w-full flex flex-col items-center justify-center gap-4 p-4">
+		<div class="w-full flex flex-col items-center  justify-center gap-4 p-4">
 			<div
 				v-for="item in data"
 				:key="item.fieldname"

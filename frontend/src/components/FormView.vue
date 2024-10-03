@@ -2,11 +2,11 @@
 	<div class="flex flex-col h-full w-full" v-if="isFormReady">
 		<div class="w-full h-full bg-white sm:w-96 flex flex-col">
 			<header
-				class="flex flex-row bg-white shadow-sm py-4 px-3 items-center sticky top-0 z-[1000]"
+				class="flex flex-row bg-blue-900 shadow-sm py-4 px-3 items-center sticky top-0 z-[1000]"
 			>
 				<Button
-					variant="ghost"
-					class="!pl-0 hover:bg-white"
+					variant=""
+					class="!pl-0 hover:bg-teal-600 text-white"
 					@click="router.back()"
 				>
 					<FeatherIcon name="chevron-left" class="h-5 w-5" />
@@ -49,7 +49,7 @@
 						}"
 					/>
 				</div>
-				<h2 v-else class="text-2xl font-semibold text-gray-900">
+				<h2 v-else class="text-2xl font-semibold text-white">
 					{{ `New ${doctype}` }}
 				</h2>
 			</header>
@@ -205,7 +205,7 @@
 				/>
 
 				<Button
-					class="w-full rounded py-5 text-base disabled:bg-gray-700 disabled:text-white"
+					class="w-full bg-blue-800 hover:bg-blue-900 rounded py-5 text-base disabled:bg-blue-700 disabled:text-white"
 					:class="formButton === 'Cancel' ? 'shadow' : ''"
 					@click="formButton === 'Save' ? saveForm() : submitOrCancelForm()"
 					:variant="formButton === 'Cancel' ? 'subtle' : 'solid'"
