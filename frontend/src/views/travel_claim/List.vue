@@ -2,7 +2,7 @@
 	<ion-page>
 		<ListView
 			doctype="Travel Request"
-			pageTitle="Claim Travel Request History"
+			pageTitle="Travel Request History"
 			:tabButtons="TAB_BUTTONS"
 			:fields="EXPENSE_CLAIM_FIELDS"
 			groupBy="`tabTravel Request`.name"
@@ -15,7 +15,7 @@
 import { IonPage } from "@ionic/vue"
 import ListView from "@/components/ListView.vue"
 
-const TAB_BUTTONS = ["My Claims", "Team Claims"]
+const TAB_BUTTONS = ["My Travel Claims", "Team Travel Claims"]
 const EXPENSE_CLAIM_FIELDS = [
 	"`tabTravel Request`.name",
 	"`tabTravel Request`.employee",
