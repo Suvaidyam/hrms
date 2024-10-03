@@ -20,7 +20,7 @@
 				</div>
 
 				<div>
-					<div class="text-lg text-gray-800 font-bold ">Recent Expenses</div>
+					<div class="text-lg text-gray-800 font-bold">Recent Travel Request</div>
 					<RequestList
 						:component="markRaw(TravelClaimItem)"
 						:items="myClaims.data"

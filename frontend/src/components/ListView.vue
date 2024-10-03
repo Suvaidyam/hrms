@@ -134,6 +134,7 @@ import CustomIonModal from "@/components/CustomIonModal.vue"
 
 import useWorkflow from "@/composables/workflow"
 import { useListUpdate } from "@/composables/realtime"
+import TravelClaimItem from "./TravelClaimItem.vue"
 
 const props = defineProps({
 	doctype: {
@@ -166,6 +167,8 @@ const listItemComponent = {
 	"Leave Application": markRaw(LeaveRequestItem),
 	"Expense Claim": markRaw(ExpenseClaimItem),
 	"Employee Advance": markRaw(EmployeeAdvanceItem),
+	"Travel Request": markRaw(TravelClaimItem),
+
 }
 
 const router = useRouter()
