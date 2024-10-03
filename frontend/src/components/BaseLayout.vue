@@ -16,7 +16,7 @@
 								class="flex flex-col items-center"
 							>
 								<span class="relative inline-block" @click="navigate">
-									<FeatherIcon name="bell" class="h-6 w-6" />
+									<FeatherIcon name="bell" class="h-6 w-6 !text-white" />
 									<span
 										v-if="unreadNotificationsCount.data"
 										class="absolute top-0 right-0.5 inline-block w-2 h-2 bg-red-600 rounded-full border border-white"
