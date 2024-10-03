@@ -164,7 +164,7 @@ watch(
 	(employee_id) => {
 		if (props.id && employee_id !== employee.data.name) {
 			// if employee is not the current user, set form as read only
-			setFormReadOnly()
+			// setFormReadOnly()
 		}
 	}
 )
