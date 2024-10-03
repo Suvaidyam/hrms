@@ -73,9 +73,9 @@ const props = defineProps({
 })
 
 const tabs = [
-	{ name: "Travel Request", lastField:"other_details" },
-	{ name: "Travel Itinerary", lastField: "other_details" },
-	{ name: "Costing Details", lastField: "costings" },
+	{ name: "Travel Request", lastField:"description" },
+	{ name: "Travel Itinerary", lastField: "itinerary" },
+	{ name: "Costing Details", lastField: "comments" },
 ]
 
 // object to store form data

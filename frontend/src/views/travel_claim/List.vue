@@ -1,11 +1,11 @@
 <template>
 	<ion-page>
 		<ListView
-			doctype="Expense Claim"
-			pageTitle="Claim History"
+			doctype="Travel Request"
+			pageTitle="Travel Claim History"
 			:tabButtons="TAB_BUTTONS"
 			:fields="EXPENSE_CLAIM_FIELDS"
-			groupBy="`tabExpense Claim`.name"
+			groupBy="`tabTravel Request`.name"
 			:filterConfig="FILTER_CONFIG"
 		/>
 	</ion-page>
@@ -17,17 +17,9 @@ import ListView from "@/components/ListView.vue"
 
 const TAB_BUTTONS = ["My Claims", "Team Claims"]
 const EXPENSE_CLAIM_FIELDS = [
-	"`tabExpense Claim`.name",
-	"`tabExpense Claim`.employee",
-	"`tabExpense Claim`.employee_name",
-	"`tabExpense Claim`.approval_status",
-	"`tabExpense Claim`.status",
-	"`tabExpense Claim`.expense_approver",
-	"`tabExpense Claim`.total_claimed_amount",
-	"`tabExpense Claim`.posting_date",
-	"`tabExpense Claim`.company",
-	"`tabExpense Claim Detail`.expense_type",
-	"count(`tabExpense Claim Detail`.expense_type) as total_expenses",
+	"name",
+	"travel_type",
+	"purpose_of_travel",
 ]
 
 const FILTER_CONFIG = [

@@ -20,7 +20,7 @@
 				</div>
 
 				<div>
-					<div class="text-lg text-gray-800 font-bold">Recent Expenses</div>
+					<div class="text-lg text-gray-800 font-bold">Recent Travel Request</div>
 					<RequestList
 						:component="markRaw(TravelClaimItem)"
 						:items="myClaims.data"
@@ -29,7 +29,7 @@
 					/>
 				</div>
 
-				<div>
+				<!-- <div>
 					<div class="flex flex-row justify-between items-center">
 						<div class="text-lg text-gray-800 font-bold">
 							Employee Advance Balance
@@ -43,7 +43,7 @@
 					</div>
 
 					<EmployeeAdvanceBalance :items="advanceBalance.data" />
-				</div>
+				</div> -->
 			</div>
 		</template>
 	</BaseLayout>
