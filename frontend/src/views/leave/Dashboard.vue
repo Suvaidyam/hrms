@@ -11,8 +11,8 @@
 					>
 						<Button
 							@click="navigate"
-							variant="solid"
-							class="py-5 text-base w-full"
+							variant=""
+							class="py-5 text-base w-full bg-blue-900 text-white"
 						>
 							Request a Leave
 						</Button>

@@ -11,8 +11,8 @@
 					>
 						<Button
 							@click="navigate"
-							variant="solid"
-							class="w-full py-5 text-base"
+							variant=""
+							class="w-full py-5 text-base bg-blue-900 text-white"
 						>
 							Claim an Expense
 						</Button>

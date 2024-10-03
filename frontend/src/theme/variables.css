@@ -4,7 +4,7 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 
 :root {
-	--ion-background-color: #f4f5f6;
+	--ion-background-color: #e9f7f4fd;
 	--ion-font-family: "InterVar", sans-serif;
 	--ion-tab-bar-color-selected: #525252;
 	--ion-tab-bar-background-focused: #e2e2e2;
