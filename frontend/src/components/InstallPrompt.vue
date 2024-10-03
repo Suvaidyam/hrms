@@ -2,14 +2,14 @@
 	<!-- Install PWA dialog -->
 	<Dialog v-model="showDialog">
 		<template #body-title>
-			<h2 class="text-lg font-bold">Install Frappe HR</h2>
+			<div class="text-lg !bg-white !text-gray-900 font-bold">Install Frappe HR</div>
 		</template>
 		<template #body-content>
 			<p>Get the app on your device for easy access & a better experience!</p>
 		</template>
 		<template #actions>
-			<Button variant="solid" @click="() => install()" class="py-5 w-full">
-				<template #prefix><FeatherIcon name="download" class="w-4" /></template>
+			<Button variant="" @click="() => install()" class="py-5 w-full !bg-blue-900 !text-white">
+				<template #prefix><FeatherIcon name="download" class="w-4 !text-white" /></template>
 				Install
 			</Button>
 		</template>

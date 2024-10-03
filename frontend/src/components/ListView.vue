@@ -2,32 +2,32 @@
 	<ion-header class="ion-no-border">
 		<div class="w-full sm:w-96">
 			<div
-				class="flex flex-row bg-white shadow-sm py-4 px-3 items-center justify-between border-b"
+				class="flex flex-row bg-blue-900 shadow-sm py-4 px-3 items-center justify-between border-b"
 			>
 				<div class="flex flex-row items-center">
 					<Button
-						variant="ghost"
-						class="!pl-0 hover:bg-white"
+						variant=""
+						class="!pl-0 hover:bg-white bg-white text-white"
 						@click="router.back()"
 					>
 						<FeatherIcon name="chevron-left" class="h-5 w-5" />
 					</Button>
-					<h2 class="text-xl font-semibold text-gray-900">{{ pageTitle }}</h2>
+					<h2 class="text-xl  ml-2 font-semibold text-white">{{ pageTitle }}</h2>
 				</div>
 
-				<div class="flex flex-row gap-2">
+				<div class="flex flex-row gap-2 ">
 					<Button
 						id="show-filter-modal"
 						icon="filter"
-						variant="subtle"
+						variant=""
 						:class="[
 							areFiltersApplied
 								? '!border !border-gray-800 !bg-white !text-gray-900 !font-semibold'
-								: '',
+								: 'bg-white',
 						]"
 					/>
 					<router-link :to="{ name: formViewRoute }" v-slot="{ navigate }">
-						<Button variant="solid" class="mr-2" @click="navigate">
+						<Button variant="" class="mr-2 bg-white" @click="navigate">
 							<template #prefix>
 								<FeatherIcon name="plus" class="w-4" />
 							</template>
