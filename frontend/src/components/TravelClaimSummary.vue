@@ -72,7 +72,7 @@
 import { FeatherIcon } from "frappe-ui"
 import { computed } from "vue"
 
-import { expenseClaimSummary as summary } from "@/data/claims"
+import { expenseClaimSummary as summary } from "@/data/travel_claims"
 
 import { formatCurrency } from "@/utils/formatters"
 

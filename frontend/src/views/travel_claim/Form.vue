@@ -14,8 +14,8 @@
 				@validateForm="validateForm"
 			>
 				<!-- Child Tables -->
-				<template #expenses="{ isFormReadOnly }">
-					<ExpensesTable
+				<template #costing_details="{ isFormReadOnly }">
+					<TravelTable
 						v-model:expenseClaim="expenseClaim"
 						:currency="currency"
 						:isReadOnly="isReadOnly || isFormReadOnly"
@@ -55,6 +55,7 @@ import { computed, ref, watch, inject } from "vue"
 
 import FormView from "@/components/FormView.vue"
 import ExpensesTable from "@/components/ExpensesTable.vue"
+import TravelTable from "../../components/TravelTable.vue"
 import ExpenseTaxesTable from "@/components/ExpenseTaxesTable.vue"
 import ExpenseAdvancesTable from "@/components/ExpenseAdvancesTable.vue"
 
@@ -73,9 +74,9 @@ const props = defineProps({
 })
 
 const tabs = [
-	{ name: "Travel Request", lastField:"description" },
-	{ name: "Travel Itinerary", lastField: "itinerary" },
-	{ name: "Costing Details", lastField: "comments" },
+	{ name: "Travel Request", lastField:"other_details" },
+	// { name: "Travel Itinerary", lastField: "other_details" },
+	// { name: "Costing Details", lastField: "costing_details" },
 ]
 
 // object to store form data

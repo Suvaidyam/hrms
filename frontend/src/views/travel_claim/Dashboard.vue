@@ -35,7 +35,7 @@
 							Employee Advance Balance
 						</div>
 						<router-link
-							:to="{ name: 'EmployeeAdvanceListView' }"
+							:to="{ name: 'TravelClaimListView' }"
 							class="text-sm text-gray-800 font-semibold cursor-pointer underline underline-offset-2"
 						>
 							View List
