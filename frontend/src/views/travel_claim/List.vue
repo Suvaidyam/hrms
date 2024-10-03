@@ -1,11 +1,11 @@
 <template>
 	<ion-page>
 		<ListView
-			doctype="Expense Claim"
-			pageTitle="Claim History"
+			doctype="Travel Request"
+			pageTitle="Claim Travel Request History"
 			:tabButtons="TAB_BUTTONS"
 			:fields="EXPENSE_CLAIM_FIELDS"
-			groupBy="`tabExpense Claim`.name"
+			groupBy="`tabTravel Request`.name"
 			:filterConfig="FILTER_CONFIG"
 		/>
 	</ion-page>
@@ -17,26 +17,26 @@ import ListView from "@/components/ListView.vue"
 
 const TAB_BUTTONS = ["My Claims", "Team Claims"]
 const EXPENSE_CLAIM_FIELDS = [
-	"`tabExpense Claim`.name",
-	"`tabExpense Claim`.employee",
-	"`tabExpense Claim`.employee_name",
-	"`tabExpense Claim`.approval_status",
-	"`tabExpense Claim`.status",
-	"`tabExpense Claim`.expense_approver",
-	"`tabExpense Claim`.total_claimed_amount",
-	"`tabExpense Claim`.posting_date",
-	"`tabExpense Claim`.company",
-	"`tabExpense Claim Detail`.expense_type",
-	"count(`tabExpense Claim Detail`.expense_type) as total_expenses",
+	"`tabTravel Request`.name",
+	"`tabTravel Request`.employee",
+	"`tabTravel Request`.employee_name",
+	// "`tabTravel Request`.approval_status",
+	"`tabTravel Request`.status",
+	"`tabTravel Request`.expense_approver",
+	"`tabTravel Request`.total_claimed_amount",
+	// "`tabTravel Request`.posting_date",
+	"`tabTravel Request`.company",
+	"`tabTravel Request Detail`.travel_type",
+	"count(`tabTravel Request Detail`.travel_type) as total_expenses",
 ]
 
 const FILTER_CONFIG = [
-	{
-		fieldname: "approval_status",
-		fieldtype: "Select",
-		label: "Approval Status",
-		options: ["Draft", "Approved", "Rejected"],
-	},
+	// {
+	// 	fieldname: "approval_status",
+	// 	fieldtype: "Select",
+	// 	label: "Approval Status",
+	// 	options: ["Draft", "Approved", "Rejected"],
+	// },
 	{
 		fieldname: "status",
 		fieldtype: "Select",
