@@ -8,24 +8,22 @@ export const expenseClaimSummary = createResource({
 		employee: employeeResource.data.name,
 	},
 	auto: true,
-	// cache: "hrms:expense_claim_summary",
 })
 
 const transformClaimData = (data) => {
 	return data.map((claim) => {
-		claim.doctype = "Expense Claim"
+		claim.doctype = "Travel Request"
 		return claim
 	})
 }
 
 export const myClaims = createResource({
-	url: "hrms.api.get_expense_claims",
+	url: "hrms.api.get_travel_costing",
 	params: {
 		employee: employeeResource.data.name,
 		limit: 10,
 	},
 	auto: true,
-	cache: "hrms:my_claims",
 	transform(data) {
 		return transformClaimData(data)
 	},
@@ -33,6 +31,7 @@ export const myClaims = createResource({
 		expenseClaimSummary.reload()
 	},
 })
+
 
 export const teamClaims = createResource({
 	url: "hrms.api.get_expense_claims",
@@ -52,7 +51,7 @@ export const teamClaims = createResource({
 export let claimTypesByID = reactive({})
 
 export const claimTypesResource = createResource({
-	url: "hrms.api.get_expense_claim_types",
+	url: "hrms.api.get_travel_costing",
 	auto: true,
 	transform(data) {
 		return data.map((row) => {

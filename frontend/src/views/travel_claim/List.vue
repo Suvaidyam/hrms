@@ -27,6 +27,14 @@ const TRAVEL_CLAIM_FIELDS = [
 	"`tabExpense Claim`.company",
 	"`tabExpense Claim Detail`.expense_type",
 	"count(`tabExpense Claim Detail`.expense_type) as total_expenses",
+
+	// "`tabTravel Request`.name",
+	// 	"`tabTravel Request`.travel_type",
+	// 	"`tabTravel Request`.purpose_of_travel",
+	// 	"`tabTravel Request`.employee_name",
+	// 	"`tabTravel Request`.cell_number",
+	// 	"`tabTravel Request Costing`.expense_type",
+	// 	"count(`tabTravel Request Costing`.expense_type) as total_expenses",
 ]
 
 const FILTER_CONFIG = [
