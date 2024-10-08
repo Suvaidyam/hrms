@@ -21,6 +21,7 @@ import LeaveIcon from "@/components/icons/LeaveIcon.vue"
 import ExpenseIcon from "@/components/icons/ExpenseIcon.vue"
 import EmployeeAdvanceIcon from "@/components/icons/EmployeeAdvanceIcon.vue"
 import SalaryIcon from "@/components/icons/SalaryIcon.vue"
+import Travelcon from "../components/icons/Travelcon.vue"
 
 const quickLinks = [
 	{
@@ -39,9 +40,15 @@ const quickLinks = [
 		route: "EmployeeAdvanceFormView",
 	},
 	{
+		icon: markRaw(Travelcon),
+		title: "Travel Request",
+		route: "TravelClaimFormView",
+	},
+	{
 		icon: markRaw(SalaryIcon),
 		title: "View Salary Slips",
 		route: "SalarySlipsDashboard",
 	},
+	
 ]
 </script>

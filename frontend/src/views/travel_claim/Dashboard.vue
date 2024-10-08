@@ -3,7 +3,6 @@
 		<template #body>
 			<div class="flex flex-col mt-7 mb-7 p-4 gap-7 ">
 				<TravelClaimSummary />
-
 				<div class="w-full ">
 					<router-link
 						:to="{ name: 'TravelClaimFormView' }"
@@ -28,22 +27,7 @@
 						listButtonRoute="TravelClaimListView"
 					/>
 				</div>
-
-				<!-- <div>
-					<div class="flex flex-row justify-between items-center">
-						<div class="text-lg text-gray-800 font-bold">
-							Employee Advance Balance
-						</div>
-						<router-link
-							:to="{ name: 'TravelClaimListView' }"
-							class="text-sm text-gray-800 font-semibold cursor-pointer underline underline-offset-2"
-						>
-							View List
-						</router-link>
-					</div>
-
-					<EmployeeAdvanceBalance :items="advanceBalance.data" />
-				</div> -->
+				<!-- {{ myClaims }} -->
 			</div>
 		</template>
 	</BaseLayout>
@@ -53,13 +37,8 @@
 import { markRaw } from "vue"
 
 import BaseLayout from "@/components/BaseLayout.vue"
-// import ExpenseClaimSummary from "@/components/ExpenseClaimSummary.vue"
 import TravelClaimSummary from "../../components/TravelClaimSummary.vue"
 import RequestList from "@/components/RequestList.vue"
-// import ExpenseClaimItem from "@/components/ExpenseClaimItem.vue"
 import TravelClaimItem from "../../components/TravelClaimItem.vue"
-import EmployeeAdvanceBalance from "@/components/EmployeeAdvanceBalance.vue"
-
-import { myClaims } from "@/data/claims"
-import { advanceBalance } from "@/data/advances"
+import { myClaims } from "../../data/travel_claims"
 </script>

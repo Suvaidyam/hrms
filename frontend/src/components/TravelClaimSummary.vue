@@ -9,7 +9,7 @@
 					Total Travel Amount
 				</span>
 				<span class="text-gray-800 text-lg font-bold leading-6">
-					{{ formatCurrency(total_claimed_amount, company_currency) }}
+					{{ formatCurrency(total_amount, company_currency) }}
 				</span>
 			</div>
 

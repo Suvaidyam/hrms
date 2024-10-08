@@ -9,8 +9,10 @@
 					</div>
 					<div class="text-xs font-normal text-gray-500">
 						<span>
-							{{ formatCurrency(props.doc.total_claimed_amount, currency) }}
+							<!-- {{ formatCurrency(props.doc.total_amount, currency) }} -->
 						</span>
+						<span>₹ {{ props.doc.total_amount,currency }} </span>
+
 						<span class="whitespace-pre"> &middot; </span>
 						<span class="whitespace-nowrap">
 							{{ claimDates }}
@@ -23,7 +25,8 @@
 					variant="outline"
 					:theme="statusMap[status]"
 					:label="status"
-					size="md"
+					size="lg"
+					
 				/>
 				<FeatherIcon name="chevron-right" class="h-5 w-5 text-gray-500" />
 			</div>
@@ -78,17 +81,9 @@ const statusMap = {
 }
 
 const status = computed(() => {
-	if (props.workflowStateField) {
-		return props.doc[props.workflowStateField]
-	} else if (
-		props.doc.approval_status === "Approved" &&
-		["Draft", "Unpaid", "Submitted"].includes(props.doc.status)
-	) {
-		return `${props.doc.approval_status} & ${props.doc.status}`
-	} else if (props.doc.approval_status === "Rejected") {
-		return "Rejected"
-	}
-	return props.doc.status
+	return props.workflowStateField
+		? props.doc[props.workflowStateField]
+		: props.doc.status
 })
 
 const claimTitle = computed(() => {
