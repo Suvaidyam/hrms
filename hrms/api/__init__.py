@@ -345,6 +345,41 @@ def get_expense_claims(
 	return claims
 
 
+def get_travel_claims(
+	employee: str,
+	approver_id: str | None = None,
+	for_approval: bool = False,
+	limit: int | None = None,
+) -> list[dict]:
+	filters = get_expense_claim_filters(employee, approver_id, for_approval)
+	fields = [
+		"`tabTravel Request`.name",
+		"`tabTravel Request`.travel_type",
+		"`tabTravel Request`.purpose_of_travel",
+		"`tabTravel Request`.employee_name",
+		"`tabTravel Request`.cell_number",
+		"`tabTravel Request Costing`.expense_type",
+		"count(`tabTravel Request Costing`.expense_type) as total_expenses",
+	]
+
+	if workflow_state_field := get_workflow_state_field("Travel Request"):
+		fields.append(workflow_state_field)
+
+	claims = frappe.get_list(
+		"Travel Request",
+		fields=fields,
+		filters=filters,
+		# order_by="`tabExpense Claim`.posting_date desc",
+		group_by="`tabTravel Request`.name",
+		limit=limit,
+	)
+
+	if workflow_state_field:
+		for claim in claims:
+			claim["workflow_state_field"] = workflow_state_field
+
+	return claims
+
 def get_expense_claim_filters(
 	employee: str,
 	approver_id: str | None = None,
@@ -450,6 +485,44 @@ def get_travel_claim_summary(employee: str) -> dict:
 	summary["currency"] = currency
 
 	return summary
+
+
+# {******************************  Travel_request   *****************************}
+
+@frappe.whitelist(allow_guest=True)
+def get_travel_costing(employee=None, limit=None):
+    # If no employee is provided, get the current user's employee ID
+    if not employee:
+        current_user = frappe.session.user
+	
+    # Prepare the SQL query with parameterized values
+    sql = """
+        SELECT 
+            TravelCosting.expense_type, 
+            TravelCosting.total_amount, 
+            Employee.name, 
+            Employee.employee_name
+        FROM 
+            `tabTravel Request` AS Employee 
+        LEFT JOIN
+            `tabTravel Request Costing` AS TravelCosting
+        ON 
+            TravelCosting.parent = Employee.name
+        WHERE 
+            Employee.employee = %s
+    """
+    
+    # Append LIMIT clause if specified
+    if limit is not None:
+        sql += " LIMIT %s"
+
+    # Execute the query with parameters
+    result = frappe.db.sql(sql, (employee, limit) if limit is not None else (employee,), as_dict=True)
+    
+    return result
+
+# {******************************  Travel_request   *****************************}
+
 
 @frappe.whitelist()
 def get_expense_type_description(expense_type: str) -> str:
