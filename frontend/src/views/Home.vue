@@ -39,11 +39,11 @@ const quickLinks = [
 		title: "Request an Advance",
 		route: "EmployeeAdvanceFormView",
 	},
-	{
-		icon: markRaw(Travelcon),
-		title: "Travel Request",
-		route: "TravelClaimFormView",
-	},
+	// {
+	// 	icon: markRaw(Travelcon),
+	// 	title: "Travel Request",
+	// 	route: "TravelClaimFormView",
+	// },
 	{
 		icon: markRaw(SalaryIcon),
 		title: "View Salary Slips",

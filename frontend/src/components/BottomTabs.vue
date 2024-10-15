@@ -58,11 +58,11 @@ const tabItems = [
 		title: "Expenses",
 		route: "/dashboard/expense-claims",
 	},
-	{
-		icon: TravelIcon,
-		title: "Travel",
-		route: "/dashboard/travel-claims",
-	},
+	// {
+	// 	icon: TravelIcon,
+	// 	title: "Travel",
+	// 	route: "/dashboard/travel-claims",
+	// },
 	{
 		icon: SalaryIcon,
 		title: "Salary",
