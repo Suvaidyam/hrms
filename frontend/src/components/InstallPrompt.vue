@@ -2,7 +2,7 @@
 	<!-- Install PWA dialog -->
 	<Dialog v-model="showDialog">
 		<template #body-title>
-			<div class="text-lg !bg-white !text-gray-900 font-bold">Install Frappe HR</div>
+			<div class="text-lg !bg-white !text-gray-900 font-bold">Install RySS HR</div>
 		</template>
 		<template #body-content>
 			<p>Get the app on your device for easy access & a better experience!</p>

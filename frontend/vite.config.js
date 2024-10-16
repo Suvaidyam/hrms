@@ -23,32 +23,32 @@ export default defineConfig({
 			},
 			manifest: {
 				display: "standalone",
-				name: "Frappe HR",
-				short_name: "Frappe HR",
+				name: "RySS HR",
+				short_name: "RySS HR",
 				start_url: "/hrms",
 				description: "Everyday HR & Payroll operations at your fingertips",
 				theme_color: "#ffffff",
 				icons: [
 					{
-						src: "/assets/hrms/manifest/manifest-icon-192.maskable.png",
+						src: "./public/favicon.png",
 						sizes: "192x192",
 						type: "image/png",
 						purpose: "any",
 					},
 					{
-						src: "/assets/hrms/manifest/manifest-icon-192.maskable.png",
+						src: "./public/favicon.png",
 						sizes: "192x192",
 						type: "image/png",
 						purpose: "maskable",
 					},
 					{
-						src: "/assets/hrms/manifest/manifest-icon-512.maskable.png",
+						src: "./public/favicon.png",
 						sizes: "512x512",
 						type: "image/png",
 						purpose: "any",
 					},
 					{
-						src: "/assets/hrms/manifest/manifest-icon-512.maskable.png",
+						src: "./public/favicon.png",
 						sizes: "512x512",
 						type: "image/png",
 						purpose: "maskable",
