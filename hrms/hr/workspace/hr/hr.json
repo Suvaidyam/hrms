@@ -3,16 +3,26 @@
   {
    "chart_name": "Hiring vs Attrition Count",
    "label": "Hiring vs Attrition Count"
+  },
+  {
+   "chart_name": "Total Attended",
+   "label": "Total Attended"
+  },
+  {
+   "chart_name": "Leave Chart",
+   "label": "Leave Application Submmitted Status"
   }
  ],
- "content": "[{\"type\":\"onboarding\",\"data\":{\"onboarding_name\":\"Human Resource\",\"col\":12}},{\"type\":\"chart\",\"data\":{\"chart_name\":\"Hiring vs Attrition Count\",\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Leave Application\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"HR Dashboard\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Dashboard\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Lifecycle Dashboard\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Dashboard\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Expense Claims Dashboard\",\"col\":3}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Leaves\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Attendance\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Expense Claim\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"pIv8Uq_buw\",\"type\":\"onboarding\",\"data\":{\"onboarding_name\":\"Human Resource\",\"col\":12}},{\"id\":\"R9P0NVlvxo\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Hiring vs Attrition Count\",\"col\":12}},{\"id\":\"zsPAvCN7Ft\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Leave Application Submitted\",\"col\":4}},{\"id\":\"U2EDeVxWpo\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Total Attended\",\"col\":12}},{\"id\":\"sSCRsNsJ2W\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Leave Application Submmitted Status\",\"col\":12}},{\"id\":\"23LdGPO9Ky\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"Vv7-1XAoj1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"id\":\"YD9sQV0D1A\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Leave Application\",\"col\":3}},{\"id\":\"KRyP1uLVWW\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"HR Dashboard\",\"col\":3}},{\"id\":\"jHif77pgJt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Dashboard\",\"col\":3}},{\"id\":\"g8wAhrUk24\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Lifecycle Dashboard\",\"col\":3}},{\"id\":\"u6clXPPjZY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Dashboard\",\"col\":3}},{\"id\":\"PvnVRz-gpe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Expense Claims Dashboard\",\"col\":3}},{\"id\":\"McF8CIU3va\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"QY8m8kFYGS\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"WDozWkxHAk\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"QL8ar5jBmS\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"id\":\"kVbXoQH4Nq\",\"type\":\"card\",\"data\":{\"card_name\":\"Leaves\",\"col\":4}},{\"id\":\"wfeE8XlzCg\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"S_WliNfH8m\",\"type\":\"card\",\"data\":{\"card_name\":\"Attendance\",\"col\":4}},{\"id\":\"IfKiLtXelh\",\"type\":\"card\",\"data\":{\"card_name\":\"Expense Claim\",\"col\":4}},{\"id\":\"GrziHkQ7Qo\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"XqwNH6lMA9\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}}]",
  "creation": "2020-03-02 15:48:58.322521",
+ "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
  "icon": "hr",
- "idx": 0,
+ "idx": 7,
+ "is_hidden": 0,
  "label": "HR",
  "links": [
   {
@@ -385,17 +395,27 @@
    "type": "Link"
   }
  ],
- "modified": "2022-12-06 16:55:59.080694",
+ "modified": "2024-10-18 13:26:09.269644",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
+ "number_cards": [
+  {
+   "label": "Leave Application Submitted",
+   "number_card_name": "Leave Application Submitted"
+  }
+ ],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
  "restrict_to_domain": "",
- "roles": [],
- "sequence_id": 8.0,
+ "roles": [
+  {
+   "role": "Administrator"
+  }
+ ],
+ "sequence_id": 17.0,
  "shortcuts": [
   {
    "format": "{} Open",
