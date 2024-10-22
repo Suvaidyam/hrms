@@ -1,0 +1,46 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2024-09-23 17:02:17.582274",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 5,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2024-10-16 17:17:15.954312",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Chek-In Check-Out Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT\n    t.employee,\n    e.employee_name,\n    e.designation,\n    t.checkin,\n    t.checkout,\n    (CASE WHEN t.in_count > 0 THEN 1 ELSE 0 END) as in_count,\n    (CASE WHEN t.out_count > 0 THEN 1 ELSE 0 END) as out_count\nFROM \n    (SELECT\n        employee,\n        DATE(MIN(CASE WHEN log_type = 'IN' THEN time END)) AS date,\n        TIME_FORMAT(MIN(CASE WHEN log_type = 'IN' THEN time END), '%%H:%%i:%%s') AS checkin,\n        TIME_FORMAT(MAX(CASE WHEN log_type = 'OUT' THEN time END), '%%H:%%i:%%s') AS checkout,\n        SUM(CASE WHEN log_type = 'IN' THEN 1 ELSE 0 END) AS in_count,\n        SUM(CASE WHEN log_type = 'OUT' THEN 1 ELSE 0 END) AS out_count\n    FROM\n        `tabEmployee Checkin` ec\n    WHERE\n        DATE(time) = CURRENT_DATE()\n    GROUP BY\n        employee, DATE(time)\n    ORDER BY\n        MIN(CASE WHEN log_type = 'IN' THEN time END) ASC, employee) t\nLEFT JOIN \n    `tabEmployee` AS e \nON \n    e.name = t.employee;\n",
+ "ref_doctype": "Employee Checkin",
+ "report_name": "Chek-In Check-Out Report",
+ "report_script": "",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "HR User"
+  },
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "HR Manager"
+  },
+  {
+   "role": "Employee Self Service"
+  },
+  {
+   "role": "Thematic Employee"
+  },
+  {
+   "role": "Chief Executive Officer"
+  }
+ ]
+}
