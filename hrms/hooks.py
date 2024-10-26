@@ -120,14 +120,14 @@ before_app_uninstall = "hrms.setup.before_app_uninstall"
 # -----------
 # Permissions evaluated in scripted ways
 
-permission_query_conditions = {
-	"Expense Claim": "hrms.permissionquerry.clame.get_permission_query_conditions_for_expense_claim",
-    "Travel Request": "hrms.permissionquerry.clame.get_permission_query_conditions_for_travel_request",
-    "Leave Application": "hrms.permissionquerry.clame.get_permission_query_conditions_for_leave_request",
-    "Attendance Request": "hrms.permissionquerry.clame.get_permission_query_conditions_for_attendance_request",
-    "Employee Monthly Timesheet": "hrms.permissionquerry.clame.get_permission_query_conditions_for_timesheet_request",
+# permission_query_conditions = {
+# 	"Expense Claim": "hrms.permissionquerry.clame.get_permission_query_conditions_for_expense_claim",
+#     "Travel Request": "hrms.permissionquerry.clame.get_permission_query_conditions_for_travel_request",
+#     "Leave Application": "hrms.permissionquerry.clame.get_permission_query_conditions_for_leave_request",
+#     "Attendance Request": "hrms.permissionquerry.clame.get_permission_query_conditions_for_attendance_request",
+#     "Employee Monthly Timesheet": "hrms.permissionquerry.clame.get_permission_query_conditions_for_timesheet_request",
 
-}
+# }
 #
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
