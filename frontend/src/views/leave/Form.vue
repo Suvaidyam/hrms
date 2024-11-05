@@ -10,7 +10,6 @@
 				:id="props.id"
 				:showAttachmentView="true"
 				@validateForm="validateForm"
-				
 			
 			/>
 		</ion-content>
@@ -137,6 +136,7 @@ function getFilteredFields(fields) {
 		"sb_other_details",
 		"salary_slip",
 		"letter_head",
+		"custom_remarks"
 	]
 
 	const employeeFields = [

@@ -32,3 +32,11 @@ def get_travel_costing(employee=None, limit=None):
     result = frappe.db.sql(sql,as_dict=True)
     
     return result
+
+@frappe.whitelist(allow_guest=True)
+def set_remark(remark,dt,dn):
+    new_remark = frappe.new_doc('Remarks')
+    new_remark.remarks = remark
+    new_remark.document_type = dt
+    new_remark.document = dn
+    new_remark.insert(ignore_permissions=True)

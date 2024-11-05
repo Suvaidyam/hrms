@@ -172,7 +172,13 @@
 					/>
 				</div>
 			</div>
-
+			<div>
+				<ErrorMessage
+					class="mb-2"
+					v-if="workflowRemarks"
+					:message="workflowRemarks"
+				/>
+			</div>
 			<!-- Form Primary/Secondary Button -->
 			<!-- custom form button eg: Download button in salary slips -->
 			<div
@@ -191,6 +197,7 @@
 			/>
 
 			<!-- save/submit/cancel -->
+			 
 			<div
 				v-else-if="isFormDirty || (!workflow?.hasWorkflow && formButton)"
 				class="px-4 pt-4 pb-4 standalone:pb-safe-bottom sm:w-96 bg-white sticky bottom-0 w-full drop-shadow-xl z-40 border-t rounded-t-lg"
@@ -203,7 +210,6 @@
 						documentResource?.setValue?.error
 					"
 				/>
-
 				<Button
 					class="w-full !bg-blue-800 !hover:bg-blue-900 rounded py-5 text-base disabled:bg-blue-700 disabled:text-white"
 					:class="formButton === 'Cancel' ? 'shadow' : ''"
@@ -394,7 +400,7 @@ let showSubmitDialog = ref(false)
 let showCancelDialog = ref(false)
 let isFileUploading = ref(false)
 let workflow = ref(null)
-
+let workflowRemarks = ref(null)
 const formModel = computed({
 	get() {
 		return props.modelValue
@@ -406,9 +412,9 @@ const formModel = computed({
 
 const status = computed(() => {
 	if (!props.id) return ""
-
 	if (workflow.value) {
 		const stateField = workflow.value.getWorkflowStateField()
+		console.log("stateField",stateField,formModel?.value[stateField])
 		if (stateField) return formModel.value[stateField]
 	}
 
@@ -434,6 +440,11 @@ watch(
 	async (value) => {
 		if (!value) return
 		statusColor.value = await guessStatusColor(props.doctype, status.value)
+		console.log("value",value);
+		
+		if(['Rejected','Review'].includes(value)){
+			workflowRemarks.value = 'This application is rejected.'
+		}
 	},
 	{ immediate: true }
 )
