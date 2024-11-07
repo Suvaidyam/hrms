@@ -40,3 +40,12 @@ def set_remark(remark,dt,dn):
     new_remark.document_type = dt
     new_remark.document = dn
     new_remark.insert(ignore_permissions=True)
+
+
+@frappe.whitelist(allow_guest=True)
+def show_remark(dt,dn):
+    remark_list = frappe.get_list('Remarks', filters={'document_type':dt,'document':dn}, order_by="creation desc", limit_page_length="1",pluck='remarks',ignore_permissions=True)
+    # print('=================================================',remark_list)
+    return remark_list
+
+
