@@ -1,47 +1,25 @@
 <template>
 	<ion-page>
 		<ion-content :fullscreen="true">
-			<FormView
-				v-if="formFields.data"
-				doctype="Expense Claim"
-				v-model="expenseClaim"
-				:isSubmittable="true"
-				:fields="formFields.data"
-				:id="props.id"
-				:tabbedView="true"
-				:tabs="tabs"
-				:showAttachmentView="true"
-				@validateForm="validateForm"
-			>
+			<FormView v-if="formFields.data" doctype="Expense Claim" v-model="expenseClaim" :isSubmittable="true"
+				:fields="formFields.data" :id="props.id" :tabbedView="true" :tabs="tabs" :showAttachmentView="true"
+				@validateForm="validateForm">
 				<!-- Child Tables -->
 				<template #expenses="{ isFormReadOnly }">
-					<ExpensesTable
-						v-model:expenseClaim="expenseClaim"
-						:currency="currency"
-						:isReadOnly="isReadOnly || isFormReadOnly"
-						@addExpenseItem="addExpenseItem"
-						@updateExpenseItem="updateExpenseItem"
-						@deleteExpenseItem="deleteExpenseItem"
-					/>
+					<ExpensesTable v-model:expenseClaim="expenseClaim" :currency="currency"
+						:isReadOnly="isReadOnly || isFormReadOnly" @addExpenseItem="addExpenseItem"
+						@updateExpenseItem="updateExpenseItem" @deleteExpenseItem="deleteExpenseItem" />
 				</template>
 
 				<template #taxes="{ isFormReadOnly }">
-					<ExpenseTaxesTable
-						v-model:expenseClaim="expenseClaim"
-						:currency="currency"
-						:isReadOnly="isReadOnly || isFormReadOnly"
-						@addExpenseTax="addExpenseTax"
-						@updateExpenseTax="updateExpenseTax"
-						@deleteExpenseTax="deleteExpenseTax"
-					/>
+					<ExpenseTaxesTable v-model:expenseClaim="expenseClaim" :currency="currency"
+						:isReadOnly="isReadOnly || isFormReadOnly" @addExpenseTax="addExpenseTax"
+						@updateExpenseTax="updateExpenseTax" @deleteExpenseTax="deleteExpenseTax" />
 				</template>
 
 				<template #advances="{ isFormReadOnly }">
-					<ExpenseAdvancesTable
-						v-model:expenseClaim="expenseClaim"
-						:currency="currency"
-						:isReadOnly="isReadOnly || isFormReadOnly"
-					/>
+					<ExpenseAdvancesTable v-model:expenseClaim="expenseClaim" :currency="currency"
+						:isReadOnly="isReadOnly || isFormReadOnly" />
 				</template>
 			</FormView>
 		</ion-content>
@@ -92,7 +70,7 @@ const formFields = createResource({
 	params: { doctype: "Expense Claim" },
 	transform(data) {
 		let fields = getFilteredFields(data)
-		console.log(fields),'e'
+		console.log(fields), 'e'
 		return fields.map((field) => {
 			if (field.fieldname === "posting_date") field.default = today
 			return applyFilters(field)
@@ -164,7 +142,7 @@ watch(
 	(employee_id) => {
 		if (props.id && employee_id !== employee.data.name) {
 			// if employee is not the current user, set form as read only
-			// setFormReadOnly()
+			setFormReadOnly()
 		}
 	}
 )

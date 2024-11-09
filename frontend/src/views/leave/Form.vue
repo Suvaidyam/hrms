@@ -1,18 +1,9 @@
 <template>
 	<ion-page>
 		<ion-content :fullscreen="true">
-			<FormView
-				v-if="formFields.data"
-				doctype="Leave Application"
-				v-model="leaveApplication"
-				:isSubmittable="true"
-				:fields="formFields.data"
-				:id="props.id"
-				:showAttachmentView="true"
-				@validateForm="validateForm"
-				
-			
-			/>
+			<FormView v-if="formFields.data" doctype="Leave Application" v-model="leaveApplication"
+				:isSubmittable="true" :fields="formFields.data" :id="props.id" :showAttachmentView="true"
+				@validateForm="validateForm" />
 		</ion-content>
 	</ion-page>
 </template>
@@ -85,7 +76,7 @@ watch(
 	(employee_id) => {
 		if (props.id && employee_id !== employee.data.name) {
 			// if employee is not the current user, set form as read only
-			// setFormReadOnly()
+			setFormReadOnly()
 		}
 	}
 )
@@ -137,6 +128,7 @@ function getFilteredFields(fields) {
 		"sb_other_details",
 		"salary_slip",
 		"letter_head",
+		"custom_remarks"
 	]
 
 	const employeeFields = [
