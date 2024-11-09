@@ -65,7 +65,7 @@
 									:options="field.options" :linkFilters="field.linkFilters"
 									:documentList="field.documentList" :reqd="Boolean(field.reqd)"
 									:hidden="Boolean(field.hidden)" :errorMessage="field.error_message"
-									:minDate="field.minDate" :maxDate="field.maxDate"
+									:minDate="field.minDate" :maxDate="field.maxDate" :readOnly="isFieldReadOnly(field)"
 									:addSectionPadding="fieldList[0].name !== field.name" />
 
 							</template>
@@ -102,6 +102,7 @@
 						@handleFileSelect="handleFileSelect" @handleFileDelete="handleFileDelete" />
 				</div>
 			</div>
+			<!-- My Custmize -->
 			<!-- <div>
 				<ErrorMessage class="mb-2" v-if="workflowRemarks" :message="workflowRemarks" />
 			</div> -->

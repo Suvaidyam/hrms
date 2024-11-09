@@ -504,7 +504,6 @@ const submitRemarks = async () => {
 	if (remarks.value) {
 		await call('hrms.api.api.set_remark', { remark: remarks.value, dt: props.doc.doctype, dn: props.doc.name });
 		await props.workflow.applyWorkflow(props.doc, showRemarksDialog.value.action, remarks.value); // Pass remarks to the workflow
-
 		emit("workflow-applied");
 		remarks.value = "";
 		closeDialog();
@@ -576,7 +575,7 @@ ion-action-sheet {
 	background-color: #007bff;
 	color: #fff;
 	border: none;
-	padding: 10px 20px;
+	padding: 7px 20px;
 	border-radius: 8px;
 	cursor: pointer;
 	transition: background 0.3s;
@@ -590,7 +589,7 @@ ion-action-sheet {
 	background-color: #f0f0f0;
 	color: #333;
 	border: none;
-	padding: 10px 20px;
+	padding: 7px 20px;
 	border-radius: 8px;
 	cursor: pointer;
 	transition: background 0.3s;
