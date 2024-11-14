@@ -41,11 +41,16 @@ def set_remark(remark,dt,dn):
     new_remark.document = dn
     new_remark.insert(ignore_permissions=True)
 
+@frappe.whitelist(allow_guest=True)
+def get_workflow_states():
+    return frappe.get_all('Workflow State', filters={'custom_show_remarks':1}, pluck='workflow_state_name', ignore_permissions=True)
 
 @frappe.whitelist(allow_guest=True)
 def show_remark(dt,dn):
-    remark_list = frappe.get_list('Remarks', filters={'document_type':dt,'document':dn}, order_by="creation desc", limit_page_length="1",pluck='remarks',ignore_permissions=True)
-    # print('=================================================',remark_list)
-    return remark_list
+    remark_list = frappe.get_list('Remarks', filters={'document_type':dt,'document':dn}, order_by="creation desc", limit_page_length="1",fields=['remarks','closed'],ignore_permissions=True)
+    if len(remark_list) > 0 and remark_list[0].closed != 1:
+        return [remark_list[0].remarks]
+    else:
+        return []
 
 
