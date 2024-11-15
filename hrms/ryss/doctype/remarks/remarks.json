@@ -7,7 +7,8 @@
  "field_order": [
   "remarks",
   "document_type",
-  "document"
+  "document",
+  "closed"
  ],
  "fields": [
   {
@@ -33,11 +34,17 @@
    "options": "document_type",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "closed",
+   "fieldtype": "Check",
+   "label": "Closed?"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-05 17:06:20.056258",
+ "modified": "2024-11-10 18:54:00.318310",
  "modified_by": "Administrator",
  "module": "RySS",
  "name": "Remarks",
