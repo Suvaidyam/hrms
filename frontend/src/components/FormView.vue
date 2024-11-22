@@ -5,28 +5,46 @@
 				<Button variant="" class="!pl-0 hover:bg-teal-600 text-white" @click="router.back()">
 					<FeatherIcon name="chevron-left" class="h-5 w-5" />
 				</Button>
-				<div v-if="id" class="flex flex-row items-center gap-2 overflow-hidden grow">
-					<h2 class="text-xl font-semibold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
-						{{ doctype }}
+				<div
+					v-if="id"
+					class="flex flex-row items-center gap-2 overflow-hidden grow"
+				>
+					<h2
+						class="text-xl font-semibold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis"
+					>
+						{{ __(props.doctype) }}
 					</h2>
-					<Badge :label="id" class="whitespace-nowrap text-[8px]" variant="outline" />
-					<Badge v-if="status" :label="status" :theme="statusColor" class="whitespace-nowrap text-[8px]" />
+					<Badge
+						:label="id"
+						class="whitespace-nowrap text-[8px]"
+						variant="outline"
+					/>
+					<Badge
+						v-if="status"
+						:label="__(status, null, doctype)"
+						:theme="statusColor"
+						class="whitespace-nowrap text-[8px]"
+					/>
 
-					<Dropdown class="ml-auto" :options="[
-						{
-							label: 'Delete',
-							condition: showDeleteButton,
-							onClick: () => (showDeleteDialog = true),
-						},
-						{ label: 'Reload', onClick: () => reloadDoc() },
-					]" :button="{
-						label: 'Menu',
-						icon: 'more-horizontal',
-						variant: 'ghost',
-					}" />
+					<Dropdown
+						class="ml-auto"
+						:options="[
+							{
+								label: __('Delete'),
+								condition: showDeleteButton,
+								onClick: () => (showDeleteDialog = true),
+							},
+							{ label: __('Reload'), onClick: () => reloadDoc() },
+						]"
+						:button="{
+							label: __('Menu'),
+							icon: 'more-horizontal',
+							variant: 'ghost',
+						}"
+					/>
 				</div>
-				<h2 v-else class="text-2xl font-semibold text-white">
-					{{ `New ${doctype}` }}
+				<h2 v-else class="text-2xl font-semibold text-gray-900">
+					{{ __('New {0}', [__(doctype)], props.doctype) }}
 				</h2>
 			</header>
 
@@ -45,8 +63,9 @@
 										activeTab === tab.name
 											? '!text-gray-800 !border-gray-800'
 											: 'hover:text-gray-600 hover:border-gray-300',
-									]">
-									{{ tab.name }}
+									]"
+								>
+									{{ __(tab.name, null, props.doctype) }}
 								</button>
 							</li>
 						</ul>
@@ -68,6 +87,24 @@
 									:minDate="field.minDate" :maxDate="field.maxDate" :readOnly="isFieldReadOnly(field)"
 									:addSectionPadding="fieldList[0].name !== field.name" />
 
+								<FormField
+									v-else
+									:fieldtype="field.fieldtype"
+									:fieldname="field.fieldname"
+									v-model="formModel[field.fieldname]"
+									:default="field.default"
+									:label="__(field.label, null, props.doctype)"
+									:options="field.options"
+									:linkFilters="field.linkFilters"
+									:documentList="field.documentList"
+									:readOnly="isFieldReadOnly(field)"
+									:reqd="Boolean(field.reqd)"
+									:hidden="Boolean(field.hidden)"
+									:errorMessage="field.error_message"
+									:minDate="field.minDate"
+									:maxDate="field.maxDate"
+									:addSectionPadding="fieldList[0].name !== field.name"
+								/>
 							</template>
 
 
@@ -75,7 +112,7 @@
 							<!-- Attachment upload -->
 							<div class="flex flex-row gap-2 items-center justify-center p-5" v-if="isFileUploading">
 								<LoadingIndicator class="w-3 h-3 text-gray-800" />
-								<span class="text-gray-900 text-sm">Uploading...</span>
+								<span class="text-gray-900 text-sm">{{ __("Uploading...") }} </span>
 							</div>
 
 							<FileUploaderView v-else-if="showAttachmentView && index === 0" v-model="fileAttachments"
@@ -85,17 +122,29 @@
 				</template>
 
 				<div class="flex flex-col space-y-4 p-4" v-else>
-					<FormField v-for="field in props.fields" :key="field.name" :fieldtype="field.fieldtype"
-						:fieldname="field.fieldname" v-model="formModel[field.fieldname]" :default="field.default"
-						:label="field.label" :options="field.options" :linkFilters="field.linkFilters"
-						:documentList="field.documentList" :readOnly="isFieldReadOnly(field)"
-						:reqd="Boolean(field.reqd)" :hidden="Boolean(field.hidden)" :errorMessage="field.error_message"
-						:minDate="field.minDate" :maxDate="field.maxDate" />
+					<FormField
+						v-for="field in props.fields"
+						:key="field.name"
+						:fieldtype="field.fieldtype"
+						:fieldname="field.fieldname"
+						v-model="formModel[field.fieldname]"
+						:default="field.default"
+						:label="__(field.label, null, props.doctype)"
+						:options="field.options"
+						:linkFilters="field.linkFilters"
+						:documentList="field.documentList"
+						:readOnly="isFieldReadOnly(field)"
+						:reqd="Boolean(field.reqd)"
+						:hidden="Boolean(field.hidden)"
+						:errorMessage="field.error_message"
+						:minDate="field.minDate"
+						:maxDate="field.maxDate"
+					/>
 
 					<!-- Attachment upload -->
 					<div class="flex flex-row gap-2 items-center justify-center p-5" v-if="isFileUploading">
 						<LoadingIndicator class="w-3 h-3 text-gray-800" />
-						<span class="text-gray-900 text-sm">Uploading...</span>
+						<span class="text-gray-900 text-sm">{{ __("Uploading...") }} </span>
 					</div>
 
 					<FileUploaderView v-else-if="showAttachmentView" v-model="fileAttachments"
@@ -143,9 +192,12 @@
 					class="w-full !bg-blue-800 !hover:bg-blue-900 rounded py-5 text-base disabled:bg-blue-700 disabled:text-white"
 					:class="formButton === 'Cancel' ? 'shadow' : ''"
 					@click="formButton === 'Save' ? saveForm() : submitOrCancelForm()"
-					:variant="formButton === 'Cancel' ? 'subtle' : 'solid'" :loading="docList.insert.loading || documentResource?.setValue?.loading
-						">
-					{{ formButton }}
+					:variant="formButton === 'Cancel' ? 'subtle' : 'solid'"
+					:loading="
+						docList.insert.loading || documentResource?.setValue?.loading
+					"
+				>
+					{{ __(formButton) }}
 				</Button>
 			</div>
 		</div>
@@ -154,22 +206,31 @@
 	<!-- Confirmation Dialogs -->
 	<Dialog v-model="showDeleteDialog">
 		<template #body-title>
-			<h2 class="text-xl font-bold">Delete {{ props.doctype }}</h2>
+			<h2 class="text-xl font-bold">{{ __("Delete {0}", [__(props.doctype)]) }}</h2>
 		</template>
 		<template #body-content>
 			<p>
-				Are you sure you want to delete the {{ props.doctype }}
+				{{ __("Are you sure you want to delete the {0}", [__(props.doctype)])  }}
 				<span class="font-bold">{{ formModel.name }}</span>
 				?
 			</p>
 		</template>
 		<template #actions>
 			<div class="flex flex-row gap-4">
-				<Button variant="outline" class="py-5 w-full" @click="showDeleteDialog = false">
-					Cancel
+				<Button
+					variant="outline"
+					class="py-5 w-full"
+					@click="showDeleteDialog = false"
+				>
+					{{ __("Cancel") }}
 				</Button>
-				<Button variant="solid" theme="red" @click="handleDocDelete" class="py-5 w-full">
-					Delete
+				<Button
+					variant="solid"
+					theme="red"
+					@click="handleDocDelete"
+					class="py-5 w-full"
+				>
+					{{__("Delete") }}
 				</Button>
 			</div>
 		</template>
@@ -177,22 +238,30 @@
 
 	<Dialog v-model="showSubmitDialog">
 		<template #body-title>
-			<h2 class="text-xl font-bold">Confirm</h2>
+			<h2 class="text-xl font-bold">{{ __("Confirm") }} </h2>
 		</template>
 		<template #body-content>
 			<p>
-				Permanently submit {{ props.doctype }}
+				{{ __("Permanently submit {0}", [__(props.doctype)]) }}
 				<span class="font-bold">{{ formModel.name }}</span>
 				?
 			</p>
 		</template>
 		<template #actions>
 			<div class="flex flex-row gap-4">
-				<Button variant="outline" class="py-5 w-full" @click="showSubmitDialog = false">
-					No
+				<Button
+					variant="outline"
+					class="py-5 w-full"
+					@click="showSubmitDialog = false"
+				>
+					{{ __("No") }}
 				</Button>
-				<Button variant="solid" @click="handleDocUpdate('submit')" class="py-5 w-full">
-					Yes
+				<Button
+					variant="solid"
+					@click="handleDocUpdate('submit')"
+					class="py-5 w-full"
+				>
+					{{ __("Yes") }}
 				</Button>
 			</div>
 		</template>
@@ -200,21 +269,30 @@
 
 	<Dialog v-model="showCancelDialog">
 		<template #body-title>
-			<h2 class="text-xl font-bold">Confirm</h2>
+			<h2 class="text-xl font-bold">{{ __("Confirm") }} </h2>
 		</template>
 		<template #body-content>
 			<p>
-				Permanently cancel {{ props.doctype }}
-				<span class="font-bold">{{ formModel.name }}</span>?
+				{{ __("Permanently cancel {0}", [__(props.doctype)]) }}
+				<span class="font-bold">{{ formModel.name }}</span
+				>?
 			</p>
 		</template>
 		<template #actions>
 			<div class="flex flex-row gap-4">
-				<Button variant="outline" class="py-5 w-full" @click="showCancelDialog = false">
-					No
+				<Button
+					variant="outline"
+					class="py-5 w-full"
+					@click="showCancelDialog = false"
+				>
+					{{ __("No") }}
 				</Button>
-				<Button variant="solid" @click="handleDocUpdate('cancel')" class="py-5 w-full">
-					Yes
+				<Button
+					variant="solid"
+					@click="handleDocUpdate('cancel')"
+					class="py-5 w-full"
+				>
+					{{ __("Yes") }}
 				</Button>
 			</div>
 		</template>
@@ -222,7 +300,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, ref, watch } from "vue"
+import { computed, inject, nextTick, onMounted, ref, watch } from "vue"
 import { useRouter } from "vue-router"
 import {
 	ErrorMessage,
@@ -290,6 +368,9 @@ const props = defineProps({
 })
 const emit = defineEmits(["validateForm", "update:modelValue"])
 const router = useRouter()
+
+const __ = inject("$translate")
+
 let activeTab = ref(props.tabs?.[0].name)
 let fileAttachments = ref([])
 let statusColor = ref("")
@@ -444,8 +525,8 @@ const docList = createListResource({
 	insert: {
 		async onSuccess(data) {
 			toast({
-				title: "Success",
-				text: `${props.doctype} created successfully!`,
+				title: __("Success"),
+				text: __("{0} created successfully!", [__(props.doctype)]),
 				icon: "check-circle",
 				position: "bottom-center",
 				iconClasses: "text-green-500",
@@ -459,8 +540,8 @@ const docList = createListResource({
 		},
 		onError() {
 			toast({
-				title: "Error",
-				text: `Error creating ${props.doctype}`,
+				title: __("Error"),
+				text: __("Error creating {0}", [__(props.doctype)]),
 				icon: "alert-circle",
 				position: "bottom-center",
 				iconClasses: "text-red-500",
@@ -477,8 +558,8 @@ const documentResource = createDocumentResource({
 	setValue: {
 		onSuccess() {
 			toast({
-				title: "Success",
-				text: `${props.doctype} updated successfully!`,
+				title: __("Success"),
+				text: __("{0} updated successfully!", [__(props.doctype)]),
 				icon: "check-circle",
 				position: "bottom-center",
 				iconClasses: "text-green-500",
@@ -486,8 +567,8 @@ const documentResource = createDocumentResource({
 		},
 		onError() {
 			toast({
-				title: "Error",
-				text: `Error updating ${props.doctype}`,
+				title: __("Error"),
+				text: __("Error updating {0}", [__(props.doctype)]),
 				icon: "alert-circle",
 				position: "bottom-center",
 				iconClasses: "text-red-500",
@@ -499,8 +580,8 @@ const documentResource = createDocumentResource({
 		onSuccess() {
 			router.back()
 			toast({
-				title: "Success",
-				text: `${props.doctype} deleted successfully!`,
+				title: __("Success"),
+				text: __("{0} deleted successfully!", [__(props.doctype)]),
 				icon: "check-circle",
 				position: "bottom-center",
 				iconClasses: "text-green-500",
@@ -508,8 +589,8 @@ const documentResource = createDocumentResource({
 		},
 		onError() {
 			toast({
-				title: "Error",
-				text: `Error deleting ${props.doctype}`,
+				title: __("Error"),
+				text: __("Error deleting {0}", [__(props.doctype)]),
 				icon: "alert-circle",
 				position: "bottom-center",
 				iconClasses: "text-red-500",

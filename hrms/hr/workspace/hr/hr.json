@@ -180,7 +180,7 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Employee Exits",
    "link_count": 0,
    "link_to": "Employee Exits",
@@ -395,7 +395,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-10-18 13:26:09.269644",
+ "modified": "2024-10-10 16:55:59.080694",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
