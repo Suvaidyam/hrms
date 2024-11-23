@@ -3,7 +3,13 @@
 
 frappe.query_reports["Chek-In Check-Out Report"] = {
 	"filters": [
-
+		{
+			"label": "Department",
+			"fieldname": "department",
+			"fieldtype": "Link",
+			"options": "Department",
+			"default": "",
+		}
 	],
 	formatter: function (value, k, column) {
 		if (column.fieldname == 'location') {
