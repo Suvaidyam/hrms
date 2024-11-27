@@ -53,17 +53,21 @@ def show_remark(dt,dn):
     else:
         return []
 
-
+# from frappe import _
 # @frappe.whitelist(allow_guest=True)
 # def send_travel_request_email(docname):
+    print('==================================== ewfnejfnejfer')
     # Fetch the document
     doc = frappe.get_doc("Travel Request", docname)
-    
+    print(doc,'doc==========================')
     # Get the Team Leader (TL) of the employee
     TL = frappe.db.get_value("Employee", doc.employee, "reports_to")
+    print('==========================================TL', TL)
     if TL:
         TL_name = frappe.db.get_value("Employee", TL, "employee_name")
         TL_email = frappe.db.get_value("Employee", TL, "user_id")
+        print('============================================= Tl_email',TL_name)
+        print('============================================= Tl_email',TL_email)
         if TL_email:
             subject = f"Travel Request Pending for Your Approval - {doc.name}"
             message = f"""
@@ -82,6 +86,7 @@ def show_remark(dt,dn):
     if Ceo:
         Ceo_name = frappe.db.get_value("Employee", Ceo, "employee_name")
         Ceo_email = frappe.db.get_value("Employee", Ceo, "user_id")
+        print(Ceo_email,'===================================================Ceo_email')
         if Ceo_email:
             subject = f"Travel Request Pending for Your Approval - {doc.name}"
             message = f"""
