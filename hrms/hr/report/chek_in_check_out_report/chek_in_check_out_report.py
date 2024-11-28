@@ -134,6 +134,11 @@ def execute(filters=None):
             "fieldname": "location",
             "fieldtype": "Data",
             "label": "Location In Time",
+        },
+        {
+            "fieldname": "place",
+            "fieldtype": "Data",
+            "label": "Place Name",
         }
     ]
 
@@ -154,6 +159,8 @@ def execute(filters=None):
             IFNULL(t.in_count, 0) AS in_count,
             IFNULL(t.out_count, 0) AS out_count,
             IFNULL(CONCAT(t.latitude, ',', t.longitude), 'N/A') AS location
+            IFNULL(t.place, 'N/A') AS place
+
         FROM 
             `tabEmployee` AS e
         LEFT JOIN
@@ -161,6 +168,7 @@ def execute(filters=None):
                 employee,
                 latitude,
                 longitude,
+                place,
                 DATE(time) AS date,
                 TIME_FORMAT(MIN(CASE WHEN log_type = 'IN' THEN time END), '%H:%i:%s') AS checkin,
                 TIME_FORMAT(MAX(CASE WHEN log_type = 'OUT' THEN time END), '%H:%i:%s') AS checkout,
