@@ -158,7 +158,7 @@ def execute(filters=None):
             IFNULL(t.checkout, 'N/A') AS checkout,
             IFNULL(t.in_count, 0) AS in_count,
             IFNULL(t.out_count, 0) AS out_count,
-            IFNULL(CONCAT(t.latitude, ',', t.longitude), 'N/A') AS location
+            IFNULL(CONCAT(t.latitude, ',', t.longitude), 'N/A') AS location,
             IFNULL(t.place, 'N/A') AS place
 
         FROM 
