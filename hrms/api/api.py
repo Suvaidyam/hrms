@@ -54,64 +54,44 @@ def show_remark(dt,dn):
         return []
 
 # from frappe import _
-# @frappe.whitelist(allow_guest=True)
-# def send_travel_request_email(docname):
-    print('==================================== ewfnejfnejfer')
-    # Fetch the document
-    doc = frappe.get_doc("Travel Request", docname)
-    print(doc,'doc==========================')
-    # Get the Team Leader (TL) of the employee
-    TL = frappe.db.get_value("Employee", doc.employee, "reports_to")
-    print('==========================================TL', TL)
-    if TL:
-        TL_name = frappe.db.get_value("Employee", TL, "employee_name")
-        TL_email = frappe.db.get_value("Employee", TL, "user_id")
-        print('============================================= Tl_email',TL_name)
-        print('============================================= Tl_email',TL_email)
-        if TL_email:
-            subject = f"Travel Request Pending for Your Approval - {doc.name}"
-            message = f"""
-            Dear {TL_name},
-
-            A new travel request ({doc.name}) has been submitted by {doc.employee_name}.
-            Please review and take the necessary action.
-
-            Regards,
-            System
-            """
-            frappe.sendmail(recipients=[TL_email], subject=subject, message=message)
+# @frappe.whitelist()
+# def notify_reports_to():
+#     # Get the Employee record linked to the current user
+#     current_user_employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
     
-    # Get the CEO (reports_to of TL)
-    Ceo = frappe.db.get_value("Employee", TL, "reports_to") if TL else None
-    if Ceo:
-        Ceo_name = frappe.db.get_value("Employee", Ceo, "employee_name")
-        Ceo_email = frappe.db.get_value("Employee", Ceo, "user_id")
-        print(Ceo_email,'===================================================Ceo_email')
-        if Ceo_email:
-            subject = f"Travel Request Pending for Your Approval - {doc.name}"
-            message = f"""
-            Dear {Ceo_name},
-
-            A travel request ({doc.name}) has been approved by {TL_name} and is now pending your approval.
-
-            Regards,
-            System
-            """
-            frappe.sendmail(recipients=[Ceo_email], subject=subject, message=message)
-
-    # Send email to the employee regardless of workflow state
-    employee_email = frappe.db.get_value("Employee", doc.employee, "user_id")
-    if employee_email:
-        subject = f"Update on Your Travel Request - {doc.name}"
-        message = f"""
-        Dear {doc.employee_name},
-
-        Your travel request ({doc.name}) is currently under review.
-        Please monitor the progress and take any necessary action as per the workflow.
-
-        Regards,
-        System
-        """
-        frappe.sendmail(recipients=[employee_email], subject=subject, message=message)
+#     if not current_user_employee:
+#         frappe.throw("No Employee record is linked to the current user.")
     
-    return {"status": "success", "message": _("Emails sent successfully.")}
+#     # Get the reports_to for the current user's Employee record
+#     reports_to = frappe.db.get_value("Employee", current_user_employee, "reports_to")
+#     print("Reports to==================================",reports_to)
+#     if not reports_to:
+#         frappe.throw("The current user does not have a 'reports_to' defined.")
+    
+#     # Fetch the name and email of the reports_to employee
+#     reports_to_name = frappe.db.get_value("Employee", reports_to, "employee_name")
+#     reports_to_email = frappe.db.get_value("Employee", reports_to, "user_id")
+    
+#     if not reports_to_email:
+#         frappe.throw("The 'reports_to' employee does not have an email ID.")
+    
+#     # Prepare the email content
+#     subject = "Notification: Action Required"
+#     message = f"""
+#     Dear {reports_to_name},
+
+#     The current logged-in user ({frappe.session.user}) has identified you as their reporting manager.
+#     This is a system notification to ensure awareness and communication.
+
+#     Regards,
+#     System
+#     """
+    
+#     # Send email
+#     frappe.sendmail(
+#         recipients=[reports_to_email],
+#         subject=subject,
+#         message=message
+#     )
+    
+#     return {"message": f"Email sent to {reports_to_name} at {reports_to_email}"}
