@@ -111,6 +111,11 @@ def execute(filters=None):
             "label": "Department",
         },
         {
+            "fieldname": "branch",
+            "fieldtype": "Data",
+            "label": "Branch",
+        },
+        {
             "fieldname": "checkin",
             "fieldtype": "Data",
             "label": "Check In",
@@ -154,6 +159,7 @@ def execute(filters=None):
             e.employee_name,
             IFNULL(e.designation, 'N/A') AS designation,
             IFNULL(e.department, 'N/A') AS department,
+            IFNULL(e.branch, 'N/A') AS branch,
             IFNULL(t.checkin, 'N/A') AS checkin,
             IFNULL(t.checkout, 'N/A') AS checkout,
             IFNULL(t.in_count, 0) AS in_count,
