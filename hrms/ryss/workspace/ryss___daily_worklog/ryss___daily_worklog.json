@@ -1,0 +1,52 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"Lk6Oqtg7wg\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">RySS - Daily Worklogs</span>\",\"col\":12}},{\"id\":\"jEIEz5KTpC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Daily Worklog\",\"col\":3}}]",
+ "creation": "2024-09-27 12:32:26.122175",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "today",
+ "idx": 1,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "RySS - Daily Worklog",
+ "links": [],
+ "modified": "2024-12-19 13:37:20.358676",
+ "modified_by": "Administrator",
+ "module": "RySS",
+ "name": "RySS - Daily Worklog",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "Thematic Employee"
+  },
+  {
+   "role": "Thematic Lead"
+  },
+  {
+   "role": "Chief Executive Officer"
+  }
+ ],
+ "sequence_id": 9.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "{}   ",
+   "label": "Daily Worklog",
+   "link_to": "Timesheet",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "RySS - Daily Worklog"
+}
