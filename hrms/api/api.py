@@ -1,4 +1,7 @@
 import frappe
+import zipfile
+import os
+from datetime import datetime
 
 @frappe.whitelist(allow_guest=True)
 def get_travel_costing(employee=None, limit=None):
@@ -53,45 +56,83 @@ def show_remark(dt,dn):
     else:
         return []
 
-# from frappe import _
-# @frappe.whitelist()
-# def notify_reports_to():
-#     # Get the Employee record linked to the current user
-#     current_user_employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
-    
-#     if not current_user_employee:
-#         frappe.throw("No Employee record is linked to the current user.")
-    
-#     # Get the reports_to for the current user's Employee record
-#     reports_to = frappe.db.get_value("Employee", current_user_employee, "reports_to")
-#     print("Reports to==================================",reports_to)
-#     if not reports_to:
-#         frappe.throw("The current user does not have a 'reports_to' defined.")
-    
-#     # Fetch the name and email of the reports_to employee
-#     reports_to_name = frappe.db.get_value("Employee", reports_to, "employee_name")
-#     reports_to_email = frappe.db.get_value("Employee", reports_to, "user_id")
-    
-#     if not reports_to_email:
-#         frappe.throw("The 'reports_to' employee does not have an email ID.")
-    
-#     # Prepare the email content
-#     subject = "Notification: Action Required"
-#     message = f"""
-#     Dear {reports_to_name},
 
-#     The current logged-in user ({frappe.session.user}) has identified you as their reporting manager.
-#     This is a system notification to ensure awareness and communication.
 
-#     Regards,
-#     System
-#     """
+def get_timesheet_records():
+    # Get the current month and year
+    today = datetime.today()
+    current_month = today.month
+    current_year = today.year
     
-#     # Send email
-#     frappe.sendmail(
-#         recipients=[reports_to_email],
-#         subject=subject,
-#         message=message
-#     )
+    timesheets = frappe.get_list(
+        'Employee Monthly Timesheet',
+        filters={
+            'docstatus': ['!=', 2],
+            'month': current_month, 
+            'year': current_year  
+        },
+        fields=['name']
+    )
+    return timesheets
+
+@frappe.whitelist()
+def generate_bulk_timesheet_pdfs():
+    timesheets = get_timesheet_records()
     
-#     return {"message": f"Email sent to {reports_to_name} at {reports_to_email}"}
+    # Define the directory for saving PDFs
+    temp_dir = frappe.get_site_path('public', 'files', 'employee_monthly_timesheet_pdfs')
+    
+    # Ensure the directory exists
+    os.makedirs(temp_dir, exist_ok=True)
+    
+    # List to store the file paths
+    pdf_files = []
+    
+    for timesheet in timesheets:
+        try:
+            # Generate PDF for each Monthly Timesheet
+            pdf = frappe.get_print(
+                'Employee Monthly Timesheet',  
+                timesheet.name,  
+                print_format='Monthly Timesheet',  
+                as_pdf=True  
+            )
+            
+            # Define the file path
+            file_name = f"{timesheet.name}_Timesheet.pdf"
+            file_path = os.path.join(temp_dir, file_name)
+            
+            # Write the PDF to the file
+            with open(file_path, 'wb') as f:
+                f.write(pdf)
+            
+            pdf_files.append(file_path)
+
+        except Exception as e:
+            frappe.log_error(f"Error generating PDF for {timesheet.name}: {str(e)}", "Generate Bulk Timesheet PDFs")
+    
+    # Create ZIP file with the updated name
+    zip_file_path = os.path.join(temp_dir, 'Employee_Monthly_Timesheet.zip')
+    with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for pdf_file in pdf_files:
+            if os.path.exists(pdf_file):  # Ensure the file exists
+                zipf.write(pdf_file, os.path.basename(pdf_file))
+                os.remove(pdf_file)  # Remove the file after adding it to the ZIP
+
+    # Save the ZIP file in the `File` Doctype with the updated name
+    file_doc = frappe.get_doc({
+        "doctype": "File",
+        "file_name": "Employee_Monthly_Timesheet.zip",
+        "file_url": f"/files/employee_monthly_timesheet_pdfs/Employee_Monthly_Timesheet.zip",
+        "is_private": 1,  
+    })
+    file_doc.insert(ignore_permissions=True)
+    
+    # Return the file document info
+    return {
+        "message": "ZIP file created and saved successfully.",
+        "file_url": file_doc.file_url,
+        "file_name": file_doc.file_name
+    }
+
+
