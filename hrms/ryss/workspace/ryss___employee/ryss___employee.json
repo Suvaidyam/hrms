@@ -1,0 +1,51 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"5bz5o7sBNr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">RySS - Employee</span>\",\"col\":12}},{\"id\":\"kfZFD0kYCB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}}]",
+ "creation": "2024-08-14 18:02:47.651236",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "share",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "RySS - Employee",
+ "links": [],
+ "modified": "2024-12-19 13:34:25.044693",
+ "modified_by": "Administrator",
+ "module": "RySS",
+ "name": "RySS - Employee",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "Thematic Employee"
+  },
+  {
+   "role": "Thematic Lead"
+  },
+  {
+   "role": "Chief Executive Officer"
+  }
+ ],
+ "sequence_id": 3.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Employee",
+   "link_to": "Employee",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "RySS - Employee"
+}

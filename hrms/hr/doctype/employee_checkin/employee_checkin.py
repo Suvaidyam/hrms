@@ -74,6 +74,7 @@ class EmployeeCheckin(Document):
 			office_lisst = frappe.db.get_list("Place Geo Location Mapper", fields=['name','latitude', 'longitude', 'allowed_radius_in_km'])
 			for off in office_lisst:
 				distance = allowed_coordinate(float(off.latitude) , float(off.longitude) , self.latitude , self.longitude)
+				# print("Distance", distance)
 				if distance < off.allowed_radius_in_km:
 					self.place = off.name
 					# print("//"* 100 , distance)
