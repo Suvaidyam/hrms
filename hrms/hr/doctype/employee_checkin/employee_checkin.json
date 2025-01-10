@@ -15,6 +15,7 @@
   "device_id",
   "skip_auto_attendance",
   "attendance",
+  "place",
   "location_section",
   "latitude",
   "column_break_yqpi",
@@ -164,10 +165,16 @@
    "fieldname": "fetch_geolocation",
    "fieldtype": "Button",
    "label": "Fetch Geolocation"
+  },
+  {
+   "fieldname": "place",
+   "fieldtype": "Link",
+   "label": "Place",
+   "options": "Place Geo Location Mapper"
   }
  ],
  "links": [],
- "modified": "2024-05-29 21:19:11.550766",
+ "modified": "2024-11-25 12:07:25.738989",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Checkin",

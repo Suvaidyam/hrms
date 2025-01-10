@@ -11,6 +11,7 @@ from hrms.hr.doctype.shift_assignment.shift_assignment import (
 	get_actual_start_end_datetime_of_shift,
 )
 from hrms.hr.utils import validate_active_employee
+from hrms.utils.office_location import allowed_coordinate
 
 
 class EmployeeCheckin(Document):
@@ -68,7 +69,20 @@ class EmployeeCheckin(Document):
 
 		if not (self.latitude and self.longitude):
 			return
-
+		if self.latitude and self.longitude:
+			# get list of all place and check it location and if neares location then show name
+			office_lisst = frappe.db.get_list("Place Geo Location Mapper", fields=['name','latitude', 'longitude', 'allowed_radius_in_km'])
+			for off in office_lisst:
+				distance = allowed_coordinate(float(off.latitude) , float(off.longitude) , self.latitude , self.longitude)
+				# print("Distance", distance)
+				if distance < off.allowed_radius_in_km:
+					self.place = off.name
+					# print("//"* 100 , distance)
+			if not self.place:
+				# print("??"* 100)
+				frappe.throw("You are out of Range")
+				
+			# allowed_coordinate()
 		self.geolocation = frappe.json.dumps(
 			{
 				"type": "FeatureCollection",
