@@ -79,7 +79,6 @@ class EmployeeCheckin(Document):
 					self.place = off.name
 					# print("//"* 100 , distance)
 			if not self.place:
-				# print("??"* 100)
 				frappe.throw("You are out of Range")
 				
 			# allowed_coordinate()

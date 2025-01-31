@@ -130,7 +130,7 @@ def generate_bulk_timesheet_pdfs():
     
     # Return the file document info
     return {
-        "message": "ZIP file created and saved successfully.",
+        "message": "ZIP file created and saved successfully",
         "file_url": file_doc.file_url,
         "file_name": file_doc.file_name
     }
