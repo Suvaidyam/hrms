@@ -6,7 +6,7 @@
 			<div class="font-medium text-sm text-gray-500 mt-1.5" v-if="lastLog">
 				Last {{ lastLogType }} was at {{ lastLogTime }}
 			</div>
-			<Button
+			<!-- <Button
 				class="mt-4 mb-1 drop-shadow-sm py-5 text-base !bg-blue-800 text-white !hover:bg-blue-900"
 				id="open-checkin-modal"
 				@click="handleEmployeeCheckin"
@@ -17,6 +17,17 @@
 						class="w-4 !text-white"
 					/>
 				</template>
+{{ nextAction.label }}
+</Button> -->
+
+			<Button class="mt-4 mb-1 drop-shadow-sm py-5 text-base text-white !hover:opacity-90" :class="{
+				'bg-green-800 hover:bg-green-900': nextAction.label === 'Check In',
+				'bg-red-800 hover:bg-red-900': nextAction.label === 'Check Out',
+			}" id="open-checkin-modal" @click="handleEmployeeCheckin">
+				<template #prefix>
+					<FeatherIcon :name="nextAction.action === 'IN' ? 'arrow-right-circle' : 'arrow-left-circle'"
+						class="w-4 !text-white" />
+				</template>
 				{{ nextAction.label }}
 			</Button>
 		</template>
@@ -26,13 +37,8 @@
 		</div>
 	</div>
 
-	<ion-modal
-		v-if="settings.data?.allow_employee_checkin_from_mobile_app"
-		ref="modal"
-		trigger="open-checkin-modal"
-		:initial-breakpoint="1"
-		:breakpoints="[0, 1]"
-	>
+	<ion-modal v-if="settings.data?.allow_employee_checkin_from_mobile_app" ref="modal" trigger="open-checkin-modal"
+		:initial-breakpoint="1" :breakpoints="[0, 1]">
 		<div class="h-120 w-full flex flex-col bg-white items-center justify-center gap-5 p-4 mb-5">
 			<div class="flex flex-col gap-1.5 mt-2 items-center justify-center">
 				<div class="font-bold text-xl">
@@ -49,21 +55,17 @@
 				</span>
 
 				<div class="rounded border-4 translate-z-0 block overflow-hidden w-full h-170">
-					<iframe
-						width="100%"
-						height="170"
-						frameborder="0"
-						scrolling="no"
-						marginheight="0"
-						marginwidth="0"
+					<iframe width="100%" height="170" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
 						style="border: 0"
-						:src="`https://maps.google.com/maps?q=${latitude},${longitude}&hl=en&z=15&amp;output=embed`"
-					>
+						:src="`https://maps.google.com/maps?q=${latitude},${longitude}&hl=en&z=15&amp;output=embed`">
 					</iframe>
 				</div>
 			</template>
 
-			<Button variant="" class="w-full py-5 text-sm bg-blue-800 text-white hover:bg-blue-900" @click="submitLog(nextAction.action)">
+			<Button variant="" class="w-full py-5 text-sm bg-blue-800 text-white hover:bg-blue-900" :class="{
+				'bg-green-800 hover:bg-green-900': nextAction.label === 'Check In',
+				'bg-red-800 hover:bg-red-900': nextAction.label === 'Check Out',
+			}" @click="submitLog(nextAction.action)">
 				Confirm {{ nextAction.label }}
 			</Button>
 		</div>

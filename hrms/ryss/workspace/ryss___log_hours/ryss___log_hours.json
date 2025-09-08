@@ -1,0 +1,50 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"JagVz_oQhI\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">RySS - Monthly Log Hours</span>\",\"col\":12}},{\"id\":\"NqcD1XlUgc\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\" Employee Monthly Log Hours\",\"col\":3}}]",
+ "creation": "2024-11-16 16:25:06.547922",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "color-monthly-rank",
+ "idx": 1,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "RySS - Log Hours",
+ "links": [],
+ "modified": "2024-12-19 13:38:31.574250",
+ "modified_by": "Administrator",
+ "module": "RySS",
+ "name": "RySS - Log Hours",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Thematic Employee"
+  },
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "Thematic Lead"
+  },
+  {
+   "role": "Chief Executive Officer"
+  }
+ ],
+ "sequence_id": 11.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": " Employee Monthly Log Hours",
+   "link_to": "Employee Monthly Log Hours",
+   "type": "Report"
+  }
+ ],
+ "title": "RySS - Log Hours"
+}
