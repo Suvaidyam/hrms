@@ -1,0 +1,13 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Employee Monthly Timesheet",
+  "enabled": 1,
+  "modified": "2025-09-09 13:12:28.838252",
+  "module": null,
+  "name": "Bulk Download Timesheet",
+  "script": "frappe.listview_settings['Employee Monthly Timesheet'] = {\n    onload(listview) {\n        listview.page.add_inner_button(__('Download Bulk Timesheets'), function() {\n            let d = new frappe.ui.Dialog({\n                title: 'Generate Timesheet PDFs',\n                fields: [\n                    { label: 'Year', fieldname: 'year', fieldtype: 'Int', default: new Date().getFullYear(), reqd: 1 },\n                    { label: 'Month', fieldname: 'month', fieldtype: 'Int', default: new Date().getMonth() + 1, reqd: 1 }\n                ],\n                primary_action_label: 'Generate',\n                primary_action(values) {\n                    d.hide();\n                    frappe.dom.freeze(\"Generating ZIP file... Please wait\");\n                    frappe.call({\n                        method: \"hrms.api.api.generate_bulk_timesheet_pdfs\",\n                        args: { year: values.year, month: values.month },\n                        callback: function(r) {\n                            frappe.dom.unfreeze();\n                            if (!r.exc && r.message) {\n                                let file_url = r.message.file_url;\n\n                                // Show success popup with clickable link\n                                frappe.msgprint({\n                                    title: __('Download Ready'),\n                                    message: `<a href=\"${file_url}\" target=\"_blank\">Click here to download ZIP</a>`,\n                                    indicator: 'green'\n                                });\n\n                                // 🔽 Auto-download\n                                // const link = document.createElement(\"a\");\n                                // link.href = file_url;\n                                // link.download = r.message.file_name; // suggest filename\n                                // document.body.appendChild(link);\n                                // link.click();\n                                // document.body.removeChild(link);\n                            }\n                        }\n                    });\n                }\n            });\n            d.show();\n        });\n    }\n};\n",
+  "view": "List"
+ }
+]

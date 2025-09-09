@@ -58,81 +58,93 @@ def show_remark(dt,dn):
 
 
 
-def get_timesheet_records():
-    # Get the current month and year
-    today = datetime.today()
-    current_month = today.month
-    current_year = today.year
-    
+import os, zipfile
+import frappe
+from datetime import datetime
+today = datetime.today()
+
+
+def get_timesheet_records(year,month):
     timesheets = frappe.get_list(
         'Employee Monthly Timesheet',
         filters={
             'docstatus': ['!=', 2],
-            'month': current_month, 
-            'year': current_year  
+            'month': month, 
+            'year': year  
         },
         fields=['name']
     )
     return timesheets
 
 @frappe.whitelist()
-def generate_bulk_timesheet_pdfs():
-    timesheets = get_timesheet_records()
+def generate_bulk_timesheet_pdfs(year=None, month=None):
+    year = frappe.utils.cint(year)   # convert to int
+    month = frappe.utils.cint(month)
     
-    # Define the directory for saving PDFs
-    temp_dir = frappe.get_site_path('public', 'files', 'employee_monthly_timesheet_pdfs')
-    
-    # Ensure the directory exists
+    if not year or not month:
+        today = datetime.today()
+        year = today.year
+        month = today.month
+    # fetch timesheets
+    timesheets = get_timesheet_records(year, month)          
+
+    if not timesheets:
+        return {"message": "No timesheets found for current month"}
+
+    # Save inside *private/files* so it matches is_private=1
+    temp_dir = frappe.get_site_path('private', 'files')
     os.makedirs(temp_dir, exist_ok=True)
     
-    # List to store the file paths
-    pdf_files = []
+    for f in os.listdir(temp_dir):
+        if f.startswith("Employee_Monthly_Timesheet") and (f.endswith(".pdf") or f.endswith(".zip")):
+            try:
+                os.remove(os.path.join(temp_dir, f))
+            except Exception as e:
+                frappe.log_error(f"Failed to delete old file {f}: {str(e)}", "Generate Bulk Timesheet PDFs Cleanup")
     
+    pdf_files = []
+
     for timesheet in timesheets:
         try:
-            # Generate PDF for each Monthly Timesheet
             pdf = frappe.get_print(
-                'Employee Monthly Timesheet',  
-                timesheet.name,  
-                print_format='Monthly Timesheet',  
-                as_pdf=True  
+                'Employee Monthly Timesheet',
+                timesheet.name,
+                print_format='Monthly Timesheet',
+                as_pdf=True
             )
-            
-            # Define the file path
+
             file_name = f"{timesheet.name}_Timesheet.pdf"
             file_path = os.path.join(temp_dir, file_name)
-            
-            # Write the PDF to the file
+
             with open(file_path, 'wb') as f:
                 f.write(pdf)
-            
+
             pdf_files.append(file_path)
 
         except Exception as e:
             frappe.log_error(f"Error generating PDF for {timesheet.name}: {str(e)}", "Generate Bulk Timesheet PDFs")
     
-    # Create ZIP file with the updated name
-    zip_file_path = os.path.join(temp_dir, 'Employee_Monthly_Timesheet.zip')
+    # Create a ZIP file
+    zip_filename = f"Employee_Monthly_Timesheet_{month}_{year}_.zip"
+    zip_file_path = os.path.join(temp_dir, zip_filename)
     with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for pdf_file in pdf_files:
-            if os.path.exists(pdf_file):  # Ensure the file exists
+            if os.path.exists(pdf_file):
                 zipf.write(pdf_file, os.path.basename(pdf_file))
-                os.remove(pdf_file)  # Remove the file after adding it to the ZIP
+                os.remove(pdf_file)  # cleanup
 
-    # Save the ZIP file in the `File` Doctype with the updated name
+    # Attach the ZIP to File Doctype (private)
     file_doc = frappe.get_doc({
         "doctype": "File",
-        "file_name": "Employee_Monthly_Timesheet.zip",
-        "file_url": f"/files/employee_monthly_timesheet_pdfs/Employee_Monthly_Timesheet.zip",
-        "is_private": 1,  
+        "file_name": zip_filename,
+        "file_url": f"/private/files/{zip_filename}",
+        "is_private": 1,
     })
     file_doc.insert(ignore_permissions=True)
-    
-    # Return the file document info
+    frappe.db.commit()
+    os.remove(zip_file_path)
     return {
         "message": "ZIP file created and saved successfully",
         "file_url": file_doc.file_url,
         "file_name": file_doc.file_name
     }
-
-

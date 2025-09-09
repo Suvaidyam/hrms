@@ -11,6 +11,17 @@ source_link = "http://github.com/frappe/hrms"
 # Includes in <head>
 # ------------------
 
+# Export Fixtures
+# fixtures = [
+#     {
+#         "dt": "Client Script",
+#         "filters": [
+#             ["name", "=", "Bulk Download Timesheet"]
+#         ]
+#     }
+# ]
+
+
 # include js, css files in header of desk.html
 # app_include_css = "/assets/hrms/css/hrms.css"
 app_include_js = [
