@@ -1,4 +1,7 @@
 import frappe
+import zipfile
+import os
+from datetime import datetime
 
 @frappe.whitelist(allow_guest=True)
 def get_travel_costing(employee=None, limit=None):
@@ -53,65 +56,95 @@ def show_remark(dt,dn):
     else:
         return []
 
-# from frappe import _
-# @frappe.whitelist(allow_guest=True)
-# def send_travel_request_email(docname):
-    print('==================================== ewfnejfnejfer')
-    # Fetch the document
-    doc = frappe.get_doc("Travel Request", docname)
-    print(doc,'doc==========================')
-    # Get the Team Leader (TL) of the employee
-    TL = frappe.db.get_value("Employee", doc.employee, "reports_to")
-    print('==========================================TL', TL)
-    if TL:
-        TL_name = frappe.db.get_value("Employee", TL, "employee_name")
-        TL_email = frappe.db.get_value("Employee", TL, "user_id")
-        print('============================================= Tl_email',TL_name)
-        print('============================================= Tl_email',TL_email)
-        if TL_email:
-            subject = f"Travel Request Pending for Your Approval - {doc.name}"
-            message = f"""
-            Dear {TL_name},
 
-            A new travel request ({doc.name}) has been submitted by {doc.employee_name}.
-            Please review and take the necessary action.
 
-            Regards,
-            System
-            """
-            frappe.sendmail(recipients=[TL_email], subject=subject, message=message)
+import os, zipfile
+import frappe
+from datetime import datetime
+today = datetime.today()
+
+
+def get_timesheet_records(year,month):
+    timesheets = frappe.get_list(
+        'Employee Monthly Timesheet',
+        filters={
+            'docstatus': ['!=', 2],
+            'month': month, 
+            'year': year  
+        },
+        fields=['name']
+    )
+    return timesheets
+
+@frappe.whitelist()
+def generate_bulk_timesheet_pdfs(year=None, month=None):
+    year = frappe.utils.cint(year)   # convert to int
+    month = frappe.utils.cint(month)
     
-    # Get the CEO (reports_to of TL)
-    Ceo = frappe.db.get_value("Employee", TL, "reports_to") if TL else None
-    if Ceo:
-        Ceo_name = frappe.db.get_value("Employee", Ceo, "employee_name")
-        Ceo_email = frappe.db.get_value("Employee", Ceo, "user_id")
-        print(Ceo_email,'===================================================Ceo_email')
-        if Ceo_email:
-            subject = f"Travel Request Pending for Your Approval - {doc.name}"
-            message = f"""
-            Dear {Ceo_name},
+    if not year or not month:
+        today = datetime.today()
+        year = today.year
+        month = today.month
+    # fetch timesheets
+    timesheets = get_timesheet_records(year, month)          
 
-            A travel request ({doc.name}) has been approved by {TL_name} and is now pending your approval.
+    if not timesheets:
+        return {"message": "No timesheets found for current month"}
 
-            Regards,
-            System
-            """
-            frappe.sendmail(recipients=[Ceo_email], subject=subject, message=message)
-
-    # Send email to the employee regardless of workflow state
-    employee_email = frappe.db.get_value("Employee", doc.employee, "user_id")
-    if employee_email:
-        subject = f"Update on Your Travel Request - {doc.name}"
-        message = f"""
-        Dear {doc.employee_name},
-
-        Your travel request ({doc.name}) is currently under review.
-        Please monitor the progress and take any necessary action as per the workflow.
-
-        Regards,
-        System
-        """
-        frappe.sendmail(recipients=[employee_email], subject=subject, message=message)
+    # Save inside *private/files* so it matches is_private=1
+    temp_dir = frappe.get_site_path('private', 'files')
+    os.makedirs(temp_dir, exist_ok=True)
     
-    return {"status": "success", "message": _("Emails sent successfully.")}
+    for f in os.listdir(temp_dir):
+        if f.startswith("Employee_Monthly_Timesheet") and (f.endswith(".pdf") or f.endswith(".zip")):
+            try:
+                os.remove(os.path.join(temp_dir, f))
+            except Exception as e:
+                frappe.log_error(f"Failed to delete old file {f}: {str(e)}", "Generate Bulk Timesheet PDFs Cleanup")
+    
+    pdf_files = []
+
+    for timesheet in timesheets:
+        try:
+            pdf = frappe.get_print(
+                'Employee Monthly Timesheet',
+                timesheet.name,
+                print_format='Monthly Timesheet',
+                as_pdf=True
+            )
+
+            file_name = f"{timesheet.name}_Timesheet.pdf"
+            file_path = os.path.join(temp_dir, file_name)
+
+            with open(file_path, 'wb') as f:
+                f.write(pdf)
+
+            pdf_files.append(file_path)
+
+        except Exception as e:
+            frappe.log_error(f"Error generating PDF for {timesheet.name}: {str(e)}", "Generate Bulk Timesheet PDFs")
+    
+    # Create a ZIP file
+    zip_filename = f"Employee_Monthly_Timesheet_{month}_{year}_.zip"
+    zip_file_path = os.path.join(temp_dir, zip_filename)
+    with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for pdf_file in pdf_files:
+            if os.path.exists(pdf_file):
+                zipf.write(pdf_file, os.path.basename(pdf_file))
+                os.remove(pdf_file)  # cleanup
+
+    # Attach the ZIP to File Doctype (private)
+    file_doc = frappe.get_doc({
+        "doctype": "File",
+        "file_name": zip_filename,
+        "file_url": f"/private/files/{zip_filename}",
+        "is_private": 1,
+    })
+    file_doc.insert(ignore_permissions=True)
+    frappe.db.commit()
+    os.remove(zip_file_path)
+    return {
+        "message": "ZIP file created and saved successfully",
+        "file_url": file_doc.file_url,
+        "file_name": file_doc.file_name
+    }

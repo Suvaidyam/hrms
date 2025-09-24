@@ -11,6 +11,17 @@ source_link = "http://github.com/frappe/hrms"
 # Includes in <head>
 # ------------------
 
+# Export Fixtures
+# fixtures = [
+#     {
+#         "dt": "Client Script",
+#         "filters": [
+#             ["name", "=", "Bulk Download Timesheet"]
+#         ]
+#     }
+# ]
+
+
 # include js, css files in header of desk.html
 # app_include_css = "/assets/hrms/css/hrms.css"
 app_include_js = [
@@ -205,7 +216,7 @@ doc_events = {
 
 scheduler_events = {
 	"all": [
-		"hrms.hr.doctype.interview.interview.send_interview_reminder",
+		"hrms.hr.doctype.interview.interview.send_interview_reminder"
 	],
 	"hourly": [
 		"hrms.hr.doctype.daily_work_summary_group.daily_work_summary_group.trigger_emails",
@@ -226,7 +237,7 @@ scheduler_events = {
 		"hrms.hr.utils.allocate_earned_leaves",
 	],
 	"weekly": ["hrms.controllers.employee_reminders.send_reminders_in_advance_weekly"],
-	"monthly": ["hrms.controllers.employee_reminders.send_reminders_in_advance_monthly"],
+	"monthly": ["hrms.controllers.employee_reminders.send_reminders_in_advance_monthly","hrms.api.api.generate_bulk_timesheet_pdfs"],
 }
 
 advance_payment_payable_doctypes = ["Gratuity", "Employee Advance"]
