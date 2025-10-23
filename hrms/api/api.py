@@ -68,14 +68,14 @@ from frappe.utils.pdf import get_pdf
 
 
 def get_timesheet_records(year,month):
-    timesheets = frappe.get_list(
+    timesheets = frappe.get_all(
         'Employee Monthly Timesheet',
         filters={
             'docstatus': ['!=', 2],
             'month': month, 
             'year': year  
         },
-        fields=['name']
+        fields=['name'],
     )
     return timesheets
 
@@ -111,75 +111,99 @@ def generate_bulk_timesheet_pdfs(year=None, month=None):
 
 
 @frappe.whitelist()
-def background_timesheet_pdfs(year=None, month=None,record_name=None):
+def background_timesheet_pdfs(year=None, month=None, record_name=None):
     frappe.log_error(
         f"Starting bulk Monthly Timesheet generation | Year: {year}, Month: {month}",
-        "Bulk Monthly Timesheet  Generation"
+        "Bulk Monthly Timesheet Generation"
     )
-    year = frappe.utils.cint(year)   # convert to int
+
+    year = frappe.utils.cint(year)
     month = frappe.utils.cint(month)
-    
+
     if not year or not month:
         today = datetime.today()
         year = today.year
         month = today.month
+
     # fetch timesheets
-    timesheets = get_timesheet_records(year, month)  
+    timesheets = get_timesheet_records(year, month)
     if not timesheets:
         _update_bulk_record(record_name, "Failed", None)
         return {"message": "No timesheets found for current month"}
-    
+
+    total_records = len(timesheets)
+    generated_count = 0
+    failed_count = 0
+
     _update_bulk_record(record_name, "Processing")
 
     temp_dir = frappe.get_site_path('private', 'files')
     os.makedirs(temp_dir, exist_ok=True)
-    
+
+    # Cleanup old files
     for f in os.listdir(temp_dir):
         if f.startswith("Employee_Monthly_Timesheet") and (f.endswith(".pdf") or f.endswith(".zip")):
             try:
                 os.remove(os.path.join(temp_dir, f))
             except Exception as e:
                 frappe.log_error(f"Failed to delete old file {f}: {str(e)}", "Generate Bulk Timesheet PDFs Cleanup")
-    
+
     pdf_files = []
 
+    # ✅ Loop with progress tracking
     for timesheet in timesheets:
-        frappe.log_error(f"Generating PDF for {timesheet.name}", "Bulk monthly timeSheet Generation")
-        doc = frappe.get_doc("Employee Monthly Timesheet", timesheet.name)
         try:
-          
+            doc = frappe.get_doc("Employee Monthly Timesheet", timesheet.name)
             print_format = frappe.get_doc("Print Format", "Monthly Timesheet")
             pdf_template = print_format.html
             css = print_format.css or ""
-
-            # Render HTML using Jinja
             html_content = frappe.render_template(pdf_template, {"doc": doc})
             full_html = f"<style>{css}</style>{html_content}"
-
             pdf_bytes = get_pdf(full_html)
 
-            # Save PDF temporarily
             filename = f"{doc.name}.pdf"
-            file_path = os.path.join(get_site_path("private", "files"), filename)
-
+            file_path = os.path.join(temp_dir, filename)
             with open(file_path, 'wb') as f:
                 f.write(pdf_bytes)
 
             pdf_files.append(file_path)
+            generated_count += 1
+
+            # 🔹 Update record live
+            frappe.db.set_value("Bulk Monthly Timesheet", record_name, {
+                "status": "Processing",
+                "track_records": f"{generated_count} of {total_records}"
+            })
+            frappe.db.commit()
+
+            # 🔹 Send realtime progress
+            frappe.publish_realtime(
+                event='bulk_timesheet_progress',
+                message={
+                    'record': record_name,
+                    'progress': f"{generated_count} of {total_records}",
+                    'generated': generated_count,
+                    'failed': failed_count,
+                    'total': total_records
+                },
+                user=frappe.session.user
+            )
 
         except Exception as e:
+            failed_count += 1
             frappe.log_error(f"Error generating PDF for {timesheet.name}: {str(e)}", "Generate Bulk Timesheet PDFs")
-    
-    # Create a ZIP file
-    zip_filename = f"Employee_Monthly_Timesheet_{month}_{year}_.zip"
+
+    # ✅ Create ZIP
+    zip_filename = f"Employee_Monthly_Timesheet_{month}_{year}.zip"
     zip_file_path = os.path.join(temp_dir, zip_filename)
+
     with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for pdf_file in pdf_files:
             if os.path.exists(pdf_file):
                 zipf.write(pdf_file, os.path.basename(pdf_file))
-                os.remove(pdf_file)  # cleanup
+                os.remove(pdf_file)
 
-    # Attach the ZIP to File Doctype (private)
+    # ✅ Attach to File Doctype
     file_doc = frappe.get_doc({
         "doctype": "File",
         "file_name": zip_filename,
@@ -188,13 +212,27 @@ def background_timesheet_pdfs(year=None, month=None,record_name=None):
     })
     file_doc.insert(ignore_permissions=True)
     frappe.db.commit()
-    _update_bulk_record(record_name, "Complete", file_doc.file_url)
+
+    # ✅ Final record update
+    frappe.db.set_value("Bulk Monthly Timesheet", record_name, {
+        "status": "Completed",
+        "url_autogenerated_file": file_doc.file_url,
+        "track_records": f"{generated_count} of {total_records} completed ({failed_count} failed)"
+    })
+    frappe.db.commit()
+
+    # Cleanup ZIP file from temp if needed
     os.remove(zip_file_path)
+
     return {
         "message": "ZIP file created and saved successfully",
         "file_url": file_doc.file_url,
-        "file_name": file_doc.file_name
+        "file_name": file_doc.file_name,
+        "generated": generated_count,
+        "failed": failed_count,
+        "total": total_records
     }
+
 
 
 def _update_bulk_record(record_name, status, file_url=None):
