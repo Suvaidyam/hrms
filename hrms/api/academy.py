@@ -36,10 +36,17 @@ def start_import():
     headers = [(h or "").strip() for h in rows[0]]
     data_rows = rows[1:]
     inserted_count = 0
+    updated_count = 0
 
     for row in data_rows:
         row_dict = dict(zip(headers, row))
-        new_doc = frappe.new_doc("Assessment Score Data")
+        existing_doc = frappe.db.get_value("Assessment Score Data", {"semester": doc.semester, "batch": doc.batch, "district": row_dict.get("District"), "name1": row_dict.get("Name")},"name")
+        if existing_doc:
+            new_doc = frappe.get_doc("Assessment Score Data", existing_doc)
+            updated_count += 1
+        else:
+            new_doc = frappe.new_doc("Assessment Score Data")
+            inserted_count += 1
         new_doc.batch = doc.batch
         new_doc.semester = doc.semester
         new_doc.district = row_dict.get("District")
@@ -277,12 +284,14 @@ def start_import():
             new_doc.append("dnf_fields", dnf_fields_row)
         if has_data(rm_fields_row):
             new_doc.append("rm_fields", rm_fields_row)
-
-        new_doc.insert(ignore_permissions=True)
-        inserted_count += 1
+        
+        if existing_doc:
+            new_doc.save(ignore_permissions=True)
+        else:    
+            new_doc.insert(ignore_permissions=True)
 
     frappe.db.commit()
-    return f"{inserted_count} records inserted successfully."
+    return f"{inserted_count} record(s) inserted and {updated_count} record(s) updated successfully."
 
 def has_data(d):
     """Return True if at least one non-empty value exists."""
@@ -301,12 +310,17 @@ from frappe.utils.pdf import get_pdf
 
 
 @frappe.whitelist()
-def generate_bulk_score_card(semester=None, batch=None):
-    if not semester or not batch:
-        frappe.throw("Please provide both semester and batch.")
+def generate_bulk_score_card(semester=None, batch=None, district=None):
+    # if not semester or not batch:
+    #     frappe.throw("Please provide both semester and batch.")
+    # frappe.msgprint(f'Bulk score card generation started in background for {district}.')
+    district_name = frappe.db.get_value("District", district, "district_name")
+   
+    print("me"*100, semester, batch, district,district_name)
     score_data_exists = frappe.db.exists(
-        "Assessment Score Data", {"semester": semester, "batch": batch}
+        "Assessment Score Data", {"semester": semester, "batch": batch, "district": district_name}
     )
+    
     
     if not score_data_exists:
         frappe.throw("No Assessment Score Data found for the given Semester and Batch.")
@@ -316,6 +330,7 @@ def generate_bulk_score_card(semester=None, batch=None):
             "user": frappe.session.user,
             "request_date": frappe.utils.now_datetime(),
             "semester": semester,
+            'district': district_name,
             "batch": batch,
             "status": "Pending",
         })
@@ -327,6 +342,7 @@ def generate_bulk_score_card(semester=None, batch=None):
         semester=semester,
         batch=batch,
         record_name= doc.name,
+        district_name=district_name,
         queue="long",
         timeout=3600,
         job_id=f"Generate Score Cards {semester}-{batch}"
@@ -340,7 +356,7 @@ def generate_bulk_score_card(semester=None, batch=None):
 
 
 @frappe.whitelist()
-def background_generate_score_cards(record_name, semester=None, batch=None):
+def background_generate_score_cards(record_name, semester=None, batch=None,district_name=None):
     """
     Background job:
     Generate individual PDF score cards for all Assessment Score Data filtered
@@ -361,7 +377,7 @@ def background_generate_score_cards(record_name, semester=None, batch=None):
         # 🔹 1️⃣ Fetch Assessment Score Data
         records = frappe.get_all(
             "Assessment Score Data",
-            filters={"semester": semester, "batch": batch},
+            filters={"semester": semester, "batch": batch, "district": district_name},
             fields=["name"],
             # limit=2  # optional for testing
         )
@@ -449,10 +465,9 @@ def background_generate_score_cards(record_name, semester=None, batch=None):
         frappe.log_error(f"📦 ZIP created at {zip_path}", "Bulk Score Card Generation")
 
         # 🔹 4️⃣ Create Bulk Record and Attach ZIP
-        bulk_doc = frappe.new_doc("Bulk Assessment Score Card")
-        bulk_doc.batch = batch
-        bulk_doc.semester = semester
-        bulk_doc.insert(ignore_permissions=True)
+        bulk_doc = frappe.get_doc("Bulk Assessment Score Card", record_name)
+        
+        
 
         if not os.path.exists(zip_path):
             frappe.throw(f"ZIP file not found at {zip_path}")
