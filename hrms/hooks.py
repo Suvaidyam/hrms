@@ -12,14 +12,27 @@ source_link = "http://github.com/frappe/hrms"
 # ------------------
 
 # Export Fixtures
-# fixtures = [
-#     {
-#         "dt": "Client Script",
-#         "filters": [
-#             ["name", "=", "Bulk Download Timesheet"]
-#         ]
-#     }
-# ]
+fixtures = [
+    # {
+    #     "dt": "Print Format",
+    #     "filters": [
+    #         ["name", "=", "Monthly Timesheet"]
+    #     ]
+    # },
+
+    {
+        "dt": "Client Script",
+        "filters": [
+            ["name", "=", "Bulk Download Timesheet"]
+        ]
+    },
+    #  {
+    #     "dt": "Notification",
+    #     "filters": [
+    #         ["name", "=", "Bulk Download Employee Timesheet"]
+    #     ]
+    # },
+]
 
 
 # include js, css files in header of desk.html
