@@ -318,7 +318,15 @@ def background_generate_score_cards(record_name, semester=None, batch=None,distr
 
                 pdf_template = frappe.get_doc("Print Format", "Assessment Score Data").html
                 html_content = frappe.render_template(pdf_template, {"doc": doc})
-                pdf_bytes = get_pdf(html_content)
+                options={
+                    "disable-javascript": "",
+                    "disable-local-file-access": "",
+                    "margin-top": "0mm",
+                    "margin-bottom": "0mm",
+                    "margin-left": "0mm",
+                    "margin-right": "0mm",
+                }
+                pdf_bytes = get_pdf(html_content, options=options)
 
                 filename = f"{doc.name1 or doc.name}.pdf"
                 filepath = os.path.join(get_site_path("private", "files"), filename)
