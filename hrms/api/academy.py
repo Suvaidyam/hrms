@@ -318,9 +318,19 @@ def background_generate_score_cards(record_name, semester=None, batch=None,distr
 
                 pdf_template = frappe.get_doc("Print Format", "Assessment Score Data").html
                 html_content = frappe.render_template(pdf_template, {"doc": doc})
-                options={
+                # options={
+                #     "disable-javascript": "",
+                #     "disable-local-file-access": "",
+                #     "margin-top": "0mm",
+                #     "margin-bottom": "0mm",
+                #     "margin-left": "0mm",
+                #     "margin-right": "0mm",
+                # }
+                options = {
                     "disable-javascript": "",
                     "disable-local-file-access": "",
+                    "disable-smart-shrinking": "",
+                    "print-media-type": "",
                     "margin-top": "0mm",
                     "margin-bottom": "0mm",
                     "margin-left": "0mm",
