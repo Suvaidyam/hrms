@@ -326,17 +326,17 @@ def background_generate_score_cards(record_name, semester=None, batch=None,distr
                 #     "margin-left": "0mm",
                 #     "margin-right": "0mm",
                 # }
-                options = {
-                    "disable-javascript": "",
-                    "disable-local-file-access": "",
-                    "disable-smart-shrinking": "",
-                    "print-media-type": "",
-                    "margin-top": "0mm",
-                    "margin-bottom": "0mm",
-                    "margin-left": "0mm",
-                    "margin-right": "0mm",
-                }
-                pdf_bytes = get_pdf(html_content, options=options)
+                # options = {
+                #     "disable-javascript": "",
+                #     "disable-local-file-access": "",
+                #     "disable-smart-shrinking": "",
+                #     "print-media-type": "",
+                #     "margin-top": "0mm",
+                #     "margin-bottom": "0mm",
+                #     "margin-left": "0mm",
+                #     "margin-right": "0mm",
+                # }
+                pdf_bytes = get_pdf(html_content)
 
                 filename = f"{doc.name1 or doc.name}.pdf"
                 filepath = os.path.join(get_site_path("private", "files"), filename)
