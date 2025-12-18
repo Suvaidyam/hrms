@@ -2,6 +2,10 @@ import frappe
 import zipfile
 import os
 from datetime import datetime
+from frappe.utils import get_site_path
+from frappe.utils.file_manager import save_file
+from frappe.utils.pdf import get_pdf
+
 
 @frappe.whitelist(allow_guest=True)
 def get_travel_costing(employee=None, limit=None):
@@ -58,22 +62,18 @@ def show_remark(dt,dn):
 
 
 
-import os, zipfile
-import frappe
-from datetime import datetime
-today = datetime.today()
-from frappe.utils import get_site_path
-from frappe.utils.file_manager import save_file
-from frappe.utils.pdf import get_pdf
 
 
-def get_timesheet_records(year,month):
+@frappe.whitelist()
+def get_timesheet_records(year,month, work_location=None , payroll_cost_center=None):
     timesheets = frappe.get_all(
         'Employee Monthly Timesheet',
         filters={
             'docstatus': ['!=', 2],
             'month': month, 
-            'year': year  
+            'year': year ,
+             **({'work_location': work_location} if work_location else {}),
+             **({'payroll_cost_center': payroll_cost_center} if payroll_cost_center else {})
         },
         fields=['name'],
     )
@@ -81,7 +81,16 @@ def get_timesheet_records(year,month):
 
 
 @frappe.whitelist()
-def generate_bulk_timesheet_pdfs(year=None, month=None):
+def generate_bulk_timesheet_pdfs(year=None, month=None , work_location=None , payroll_cost_center=None):
+    timesheets = get_timesheet_records(year, month, work_location, payroll_cost_center)
+        
+    if not timesheets:
+        msg = f"No timesheets found for Month: {month}, Year: {year}"
+        if work_location:
+            msg += f", Work Location: {work_location}"
+        if payroll_cost_center:
+            msg += f", Payroll Cost Center: {payroll_cost_center}"
+        frappe.throw(msg)    
     try:
         doc = frappe.get_doc({
             "doctype": "Bulk Monthly Timesheet",
@@ -90,7 +99,11 @@ def generate_bulk_timesheet_pdfs(year=None, month=None):
             "month": month,
             "year": year,
             "status": "Pending",
+            **({'work_location': work_location} if work_location else {}),
+            **({'payroll_cost_center': payroll_cost_center} if payroll_cost_center else {})
         })
+        background_configuration=frappe.get_doc("Background Job Configuration")
+        timeout_limit=background_configuration.timeout or 7200 # Default to 2 hours if not set
         doc.insert(ignore_permissions=True)
         frappe.db.commit()
         frappe.enqueue(
@@ -98,9 +111,11 @@ def generate_bulk_timesheet_pdfs(year=None, month=None):
             year=year,
             month=month,
             record_name=doc.name,
+            work_location=work_location,
+            payroll_cost_center=payroll_cost_center,
             queue="long",
-            timeout=3600,
-            job_id=f"Generate Timesheet pdf {year}-{month}"  # Unique job ID to prevent duplicates
+            timeout=timeout_limit,
+            job_id=f"Generate Timesheet pdf {year}-{month}" 
         )
         return {"message": "Bulk generation started", "record": doc.name}
     except Exception as e:
@@ -111,7 +126,7 @@ def generate_bulk_timesheet_pdfs(year=None, month=None):
 
 
 @frappe.whitelist()
-def background_timesheet_pdfs(year=None, month=None, record_name=None):
+def background_timesheet_pdfs(year=None, month=None, record_name=None , work_location=None , payroll_cost_center=None):
     frappe.log_error(
         f"Starting bulk Monthly Timesheet generation | Year: {year}, Month: {month}",
         "Bulk Monthly Timesheet Generation"
@@ -126,11 +141,12 @@ def background_timesheet_pdfs(year=None, month=None, record_name=None):
         month = today.month
 
     # fetch timesheets
-    timesheets = get_timesheet_records(year, month)
+    timesheets = get_timesheet_records(year, month , work_location, payroll_cost_center)
     if not timesheets:
         _update_bulk_record(record_name, "Failed", None)
         return {"message": "No timesheets found for current month"}
 
+  
     total_records = len(timesheets)
     generated_count = 0
     failed_count = 0
@@ -140,17 +156,11 @@ def background_timesheet_pdfs(year=None, month=None, record_name=None):
     temp_dir = frappe.get_site_path('private', 'files')
     os.makedirs(temp_dir, exist_ok=True)
 
-    # Cleanup old files
-    for f in os.listdir(temp_dir):
-        if f.startswith("Employee_Monthly_Timesheet") and (f.endswith(".pdf") or f.endswith(".zip")):
-            try:
-                os.remove(os.path.join(temp_dir, f))
-            except Exception as e:
-                frappe.log_error(f"Failed to delete old file {f}: {str(e)}", "Generate Bulk Timesheet PDFs Cleanup")
 
+    
     pdf_files = []
 
-    # ✅ Loop with progress tracking
+    #  Loop with progress tracking
     for timesheet in timesheets:
         try:
             doc = frappe.get_doc("Employee Monthly Timesheet", timesheet.name)
@@ -193,7 +203,7 @@ def background_timesheet_pdfs(year=None, month=None, record_name=None):
             failed_count += 1
             frappe.log_error(f"Error generating PDF for {timesheet.name}: {str(e)}", "Generate Bulk Timesheet PDFs")
 
-    # ✅ Create ZIP
+    #  Create ZIP
     zip_filename = f"Employee_Monthly_Timesheet_{month}_{year}.zip"
     zip_file_path = os.path.join(temp_dir, zip_filename)
 
@@ -203,7 +213,7 @@ def background_timesheet_pdfs(year=None, month=None, record_name=None):
                 zipf.write(pdf_file, os.path.basename(pdf_file))
                 os.remove(pdf_file)
 
-    # ✅ Attach to File Doctype
+    #  Attach to File Doctype
     file_doc = frappe.get_doc({
         "doctype": "File",
         "file_name": zip_filename,
@@ -213,7 +223,7 @@ def background_timesheet_pdfs(year=None, month=None, record_name=None):
     file_doc.insert(ignore_permissions=True)
     frappe.db.commit()
 
-    # ✅ Final record update
+    #  Final record update
     frappe.db.set_value("Bulk Monthly Timesheet", record_name, {
         "status": "Completed",
         "url_autogenerated_file": file_doc.file_url,
@@ -221,8 +231,7 @@ def background_timesheet_pdfs(year=None, month=None, record_name=None):
     })
     frappe.db.commit()
 
-    # Cleanup ZIP file from temp if needed
-    os.remove(zip_file_path)
+    
 
     return {
         "message": "ZIP file created and saved successfully",
